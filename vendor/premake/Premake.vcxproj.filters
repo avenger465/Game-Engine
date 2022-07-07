@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="..">
+      <UniqueIdentifier>{61705900-4DFC-870B-B6AA-880BA255880B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\Editor">
+      <UniqueIdentifier>{77567F1E-E3C0-3395-2CFF-E43A98A811EA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\Engine">
+      <UniqueIdentifier>{C603331F-326E-E795-7BAC-983BE755C5EA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\Engine\vendor">
+      <UniqueIdentifier>{63DFCF64-4FD8-EEB6-780A-D43B6462CEC2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\Engine\vendor\imgui">
+      <UniqueIdentifier>{0DAB0CB9-F9A4-350B-E211-CC1BCEAA9B77}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Editor\premake5.lua">
+      <Filter>..\Editor</Filter>
+    </None>
+    <None Include="..\..\Engine\premake5.lua">
+      <Filter>..\Engine</Filter>
+    </None>
+    <None Include="..\..\Engine\vendor\imgui\premake5.lua">
+      <Filter>..\Engine\vendor\imgui</Filter>
+    </None>
+    <None Include="..\..\premake5.lua">
+      <Filter>..</Filter>
+    </None>
+    <None Include="premake5.lua" />
+  </ItemGroup>
+</Project>
