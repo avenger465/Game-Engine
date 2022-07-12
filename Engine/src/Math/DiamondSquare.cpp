@@ -18,7 +18,7 @@ DiamondSquare::~DiamondSquare()
 //Function to reset the time to generate a new seed for the random function
 void DiamondSquare::timeReset()
 {
-	srand(time(0));
+	srand((unsigned int)time(0));
 }
 
 //Function to go through the Diamond Square Algorithm and generate the new HeightMap

@@ -4,11 +4,181 @@
 
 #include "epch.h"
 #include "CMatrix4x4.h"
+#include "MathHelpers.h"
 
 
 /*-----------------------------------------------------------------------------------------
     Member functions
 -----------------------------------------------------------------------------------------*/
+
+CMatrix4x4::CMatrix4x4(const CVector3& quat, const float& w, const CVector3& pos, const CVector3& scale)
+{
+	// Code from the Tank assignment
+	// Efficiently precalculate some values from the quaternion
+	float xx = 2 * quat.x;
+	float yy = 2 * quat.y;
+	float zz = 2 * quat.z;
+	float xy = xx * quat.y;
+	float yz = yy * quat.z;
+	float zx = zz * quat.x;
+	float wx = w * xx;
+	float wy = w * yy;
+	float wz = w * zz;
+	xx *= quat.x;
+	yy *= quat.y;
+	zz *= quat.z;
+
+	// Fill upper 3x3 matrix, combining scaling with rotation values from the quaternion
+	e00 = scale.x * (1 - yy - zz);
+	e01 = scale.x * (xy + wz);
+	e02 = scale.x * (zx - wy);
+	e03 = 0.0f; // Add 0's in fourth column
+
+	e10 = scale.y * (xy - wz);
+	e11 = scale.y * (1 - xx - zz);
+	e12 = scale.y * (yz + wx);
+	e13 = 0.0f;
+
+	e20 = scale.z * (zx + wy);
+	e21 = scale.z * (yz - wx);
+	e22 = scale.z * (1 - xx - yy);
+	e23 = 0.0f;
+
+	// Put pos (translation) in bottom row
+	e30 = pos.x;
+	e31 = pos.y;
+	e32 = pos.z;
+	e33 = 1.0f;
+}
+
+
+CMatrix4x4::CMatrix4x4(const float elt00, const float elt01, const float elt02, const float elt03, const float elt10, const float elt11, const float elt12, const float elt13, const float elt20, const float elt21, const float elt22, const float elt23, const float elt30, const float elt31, const float elt32, const float elt33)
+{
+	e00 = elt00;
+	e01 = elt01;
+	e02 = elt02;
+	e03 = elt03;
+
+	e10 = elt10;
+	e11 = elt11;
+	e12 = elt12;
+	e13 = elt13;
+
+	e20 = elt20;
+	e21 = elt21;
+	e22 = elt22;
+	e23 = elt23;
+
+	e30 = elt30;
+	e31 = elt31;
+	e32 = elt32;
+	e33 = elt33;
+}
+
+CMatrix4x4::CMatrix4x4(const CVector3& position, const CVector3& angles, const CVector3& scale)
+{
+	// First build rotation matrix
+	MakeRotation(angles);
+
+	// Scale matrix
+	e00 *= scale.x;
+	e01 *= scale.x;
+	e02 *= scale.x;
+
+	e10 *= scale.y;
+	e11 *= scale.y;
+	e12 *= scale.y;
+
+	e20 *= scale.z;
+	e21 *= scale.z;
+	e22 *= scale.z;
+
+	// Put position (translation) in bottom row
+	e30 = position.x;
+	e31 = position.y;
+	e32 = position.z;
+}
+
+CMatrix4x4::CMatrix4x4(const CVector3& position)
+{
+	// Take most elements from identity
+	e00 = 1.0f;
+	e01 = 0.0f;
+	e02 = 0.0f;
+	e03 = 0.0f;
+
+	e10 = 0.0f;
+	e11 = 1.0f;
+	e12 = 0.0f;
+	e13 = 0.0f;
+
+	e20 = 0.0f;
+	e21 = 0.0f;
+	e22 = 1.0f;
+	e23 = 0.0f;
+
+	// Put position (translation) in bottom row
+	e30 = position.x;
+	e31 = position.y;
+	e32 = position.z;
+	e33 = 1.0f;
+}
+
+CMatrix4x4::CMatrix4x4(const CVector3& v0, const CVector3& v1, const CVector3& v2, const CVector3& v3, const bool bRows)
+{
+	if (bRows)
+	{
+		e00 = v0.x;
+		e01 = v0.y;
+		e02 = v0.z;
+		e03 = 0.0f;
+
+		e10 = v1.x;
+		e11 = v1.y;
+		e12 = v1.z;
+		e13 = 0.0f;
+
+		e20 = v2.x;
+		e21 = v2.y;
+		e22 = v2.z;
+		e23 = 0.0f;
+
+		e30 = v3.x;
+		e31 = v3.y;
+		e32 = v3.z;
+		e33 = 1.0f;
+	}
+	else
+	{
+		e00 = v0.x;
+		e10 = v0.y;
+		e20 = v0.z;
+
+		e01 = v1.x;
+		e11 = v1.y;
+		e21 = v1.z;
+
+		e02 = v2.x;
+		e12 = v2.y;
+		e22 = v2.z;
+
+		e03 = v3.x;
+		e13 = v3.y;
+		e23 = v3.z;
+
+		e30 = 0.0f;
+		e31 = 0.0f;
+		e32 = 0.0f;
+		e33 = 1.0f;
+	}
+}
+
+void CMatrix4x4::SetRotation(CVector3 rotation)
+{
+	MatrixRotationX(GetEulerAngles().x * rotation.x);
+	MatrixRotationY(GetEulerAngles().y * rotation.y);
+	MatrixRotationZ(GetEulerAngles().z * rotation.z);
+}
 
 // Set a single row (range 0-3) of the matrix using a CVector3. Fourth element left unchanged
 // Can be used to set position or x,y,z axes in a matrix
@@ -136,6 +306,28 @@ CMatrix4x4 MatrixTranslation(const CVector3& t)
                        t.x, t.y, t.z,  1 };
 }
 
+void CMatrix4x4::MakeRotation(CVector3 angles)
+{
+	float sX, cX, sY, cY, sZ, cZ;
+	gen::SinCos(angles.x, &sX, &cX);
+	gen::SinCos(angles.y, &sY, &cY);
+	gen::SinCos(angles.z, &sZ, &cZ);
+
+	e00 = cZ * cY + sZ * sX * sY;
+	e01 = sZ * cX;
+	e02 = -cZ * sY + sZ * sX * cY;
+	e03 = 0.0f;
+
+	e10 = -sZ * cY + cZ * sX * sY;
+	e11 = cZ * cX;
+	e12 = sZ * sY + cZ * sX * cY;
+	e13 = 0.0f;
+
+	e20 = cX * sY;
+	e21 = -sX;
+	e22 = cX * cY;
+}
+
 
 // Return an X-axis rotation matrix of the given angle (in radians)
 CMatrix4x4 MatrixRotationX(float x)
@@ -239,16 +431,16 @@ CMatrix4x4 InverseAffine(const CMatrix4x4& m)
 void CMatrix4x4::FaceTarget(const CVector3& target)
 {
     // Use cross product of target direction and up vector to give third axis, then orthogonalise
-    CVector3 axisX, axisY, axisZ;
+	CVector3 axisX, axisY, axisZ;
     axisZ = Normalise(target - GetPosition());
-    if (IsZero(Length(axisZ))) return;
+    if (gen::IsZero(Length(axisZ))) return;
     axisX = Normalise(Cross({0, 1, 0}, axisZ));
-    if (IsZero(Length(axisX))) return;
+    if (gen::IsZero(Length(axisX))) return;
     axisY = Cross(axisZ, axisX); // Will already be normalised
 
     // Set rows of matrix, restoring existing scale. Position will be unchanged, 4th column
     // taken from unit matrix
-    CVector3 scale = GetScale();
+	CVector3 scale = GetScale();
     SetRow(0, axisX * scale.x);
     SetRow(1, axisY * scale.y);
     SetRow(2, axisZ * scale.z);

@@ -1,12 +1,12 @@
 #include "epch.h"
 #include "IRenderer.h"
-#include "Renderer\Renderer.h"
+#include "Renderer/DirectX11Renderer/Renderer.h"
 
 namespace Engine
 {
-	IRenderer* NewRenderer(const ERenderingType type)
+	IRenderer* NewRenderer(const ERenderingAPI type)
 	{
-		if (type == ERenderingType::DirectX11)
+		if (type == ERenderingAPI::DirectX11)
 		{
 			return new Renderer();
 		}

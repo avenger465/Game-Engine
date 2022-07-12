@@ -76,7 +76,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DXE_PLATFORM_WINDOWS;E_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\assimp\include;vendor\imgui;vendor\imgui\backends;vendor\DirectXTK;vendor\TinyXML2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\assimp\include;vendor\imgui;vendor\imgui\backends;vendor\DirectXTK;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -84,9 +84,6 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
-    <FxCompile>
-      <ShaderModel>5.0</ShaderModel>
-    </FxCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -101,7 +98,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DXE_PLATFORM_WINDOWS;E_Release;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\assimp\include;vendor\imgui;vendor\imgui\backends;vendor\DirectXTK;vendor\TinyXML2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\assimp\include;vendor\imgui;vendor\imgui\backends;vendor\DirectXTK;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -111,9 +108,6 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
-    <FxCompile>
-      <ShaderModel>5.0</ShaderModel>
-    </FxCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -129,16 +123,13 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DXE_PLATFORM_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\assimp\include;vendor\imgui;vendor\imgui\backends;vendor\DirectXTK;vendor\TinyXML2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\assimp\include;vendor\imgui;vendor\imgui\backends;vendor\DirectXTK;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
-    <FxCompile>
-      <ShaderModel>5.0</ShaderModel>
-    </FxCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
     </Link>
@@ -148,14 +139,21 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\BasicScene\BaseScene.h" />
-    <ClInclude Include="src\BasicScene\CLight.h" />
     <ClInclude Include="src\BasicScene\Camera.h" />
     <ClInclude Include="src\Common\Common.h" />
     <ClInclude Include="src\Common\EngineProperties.h" />
     <ClInclude Include="src\Data\Mesh.h" />
     <ClInclude Include="src\Data\Model.h" />
+    <ClInclude Include="src\Data\ParseApplicationSettings.h" />
     <ClInclude Include="src\Data\State.h" />
+    <ClInclude Include="src\Data\tinyxml2.h" />
+    <ClInclude Include="src\ECS\BaseComponent.h" />
+    <ClInclude Include="src\ECS\Components\LightComponent.h" />
+    <ClInclude Include="src\ECS\Components\MeshComponent.h" />
+    <ClInclude Include="src\ECS\Components\RendererComponent.h" />
+    <ClInclude Include="src\ECS\Components\TransformComponent.h" />
+    <ClInclude Include="src\ECS\Entity.h" />
+    <ClInclude Include="src\ECS\EntityManager.h" />
     <ClInclude Include="src\Engine.h" />
     <ClInclude Include="src\Math\CMatrix4x4.h" />
     <ClInclude Include="src\Math\CPerlinNoise.h" />
@@ -164,17 +162,20 @@
     <ClInclude Include="src\Math\DiamondSquare.h" />
     <ClInclude Include="src\Math\MathHelpers.h" />
     <ClInclude Include="src\Platforms\WindowsPlatform.h" />
-    <ClInclude Include="src\Renderer\Renderer.h" />
-    <ClInclude Include="src\Shaders\Shader.h" />
+    <ClInclude Include="src\Renderer\DirectX11Renderer\DirectX11Shaders.h" />
+    <ClInclude Include="src\Renderer\DirectX11Renderer\DirectX11States.h" />
+    <ClInclude Include="src\Renderer\DirectX11Renderer\Renderer.h" />
     <ClInclude Include="src\System\Application.h" />
-    <ClInclude Include="src\System\Direct3DSetup.h" />
     <ClInclude Include="src\System\EntryPoint.h" />
     <ClInclude Include="src\System\Interfaces\IRenderer.h" />
+    <ClInclude Include="src\System\Interfaces\IScene.h" />
+    <ClInclude Include="src\System\Interfaces\IShader.h" />
+    <ClInclude Include="src\System\Interfaces\IState.h" />
     <ClInclude Include="src\System\Interfaces\IWindow.h" />
-    <ClInclude Include="src\System\System.h" />
-    <ClInclude Include="src\Utility\CResourceManager.h" />
+    <ClInclude Include="src\TerrainGenerationScene\TerrainGenerationScene.h" />
     <ClInclude Include="src\Utility\ColourRGBA.h" />
     <ClInclude Include="src\Utility\GraphicsHelpers.h" />
+    <ClInclude Include="src\Utility\HashTable.h" />
     <ClInclude Include="src\Utility\Input.h" />
     <ClInclude Include="src\Utility\Timer.h" />
     <ClInclude Include="src\epch.h" />
@@ -182,77 +183,39 @@
     <ClInclude Include="vendor\imgui\backends\imgui_impl_win32.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\BasicScene\BaseScene.cpp" />
-    <ClCompile Include="src\BasicScene\CLight.cpp" />
     <ClCompile Include="src\BasicScene\Camera.cpp" />
     <ClCompile Include="src\Data\Mesh.cpp" />
     <ClCompile Include="src\Data\Model.cpp" />
+    <ClCompile Include="src\Data\ParseApplicationSettings.cpp" />
     <ClCompile Include="src\Data\State.cpp" />
+    <ClCompile Include="src\Data\tinyxml2.cpp" />
+    <ClCompile Include="src\ECS\Components\LightComponent.cpp" />
+    <ClCompile Include="src\ECS\Components\MeshComponent.cpp" />
+    <ClCompile Include="src\ECS\Components\RendererComponent.cpp" />
+    <ClCompile Include="src\ECS\Components\TransformComponent.cpp" />
+    <ClCompile Include="src\ECS\Entity.cpp" />
+    <ClCompile Include="src\ECS\EntityManager.cpp" />
     <ClCompile Include="src\Math\CMatrix4x4.cpp" />
     <ClCompile Include="src\Math\CPerlinNoise.cpp" />
     <ClCompile Include="src\Math\CVector2.cpp" />
     <ClCompile Include="src\Math\CVector3.cpp" />
     <ClCompile Include="src\Math\DiamondSquare.cpp" />
     <ClCompile Include="src\Platforms\WindowsPlatform.cpp" />
-    <ClCompile Include="src\Renderer\Renderer.cpp" />
-    <ClCompile Include="src\Shaders\Shader.cpp" />
+    <ClCompile Include="src\Renderer\DirectX11Renderer\DirectX11Shaders.cpp" />
+    <ClCompile Include="src\Renderer\DirectX11Renderer\DirectX11States.cpp" />
+    <ClCompile Include="src\Renderer\DirectX11Renderer\Renderer.cpp" />
     <ClCompile Include="src\System\Application.cpp" />
-    <ClCompile Include="src\System\Direct3DSetup.cpp" />
     <ClCompile Include="src\System\Interfaces\IRenderer.cpp" />
-    <ClCompile Include="src\System\System.cpp" />
-    <ClCompile Include="src\Utility\CResourceManager.cpp" />
+    <ClCompile Include="src\System\Interfaces\IShader.cpp" />
+    <ClCompile Include="src\System\Interfaces\IState.cpp" />
+    <ClCompile Include="src\TerrainGenerationScene\TerrainGenerationScene.cpp" />
     <ClCompile Include="src\Utility\GraphicsHelpers.cpp" />
+    <ClCompile Include="src\Utility\HashTable.cpp" />
     <ClCompile Include="src\Utility\Input.cpp" />
     <ClCompile Include="src\Utility\Timer.cpp" />
     <ClCompile Include="src\epch.cpp" />
     <ClCompile Include="vendor\imgui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="vendor\imgui\backends\imgui_impl_win32.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="Src\Shaders\BasicTransform_vs.hlsl">
-      <ShaderType>Vertex</ShaderType>
-      <ObjectFileOutput>Src/Shaders/BasicTransform_vs.cso</ObjectFileOutput>
-      <AdditionalOptions>/WX %(AdditionalOptions)</AdditionalOptions>
-    </FxCompile>
-    <FxCompile Include="Src\Shaders\LightModel_ps.hlsl">
-      <ShaderType>Pixel</ShaderType>
-      <ObjectFileOutput>Src/Shaders/LightModel_ps.cso</ObjectFileOutput>
-    </FxCompile>
-    <FxCompile Include="Src\Shaders\NormalMapping_ps.hlsl">
-      <ShaderType>Pixel</ShaderType>
-      <ObjectFileOutput>Src/Shaders/NormalMapping_ps.cso</ObjectFileOutput>
-    </FxCompile>
-    <FxCompile Include="Src\Shaders\NormalMapping_vs.hlsl">
-      <ShaderType>Vertex</ShaderType>
-      <ObjectFileOutput>Src/Shaders/NormalMapping_vs.cso</ObjectFileOutput>
-      <AdditionalOptions>/WX %(AdditionalOptions)</AdditionalOptions>
-    </FxCompile>
-    <FxCompile Include="Src\Shaders\PixelLightingWithAlpha_ps.hlsl">
-      <ShaderType>Pixel</ShaderType>
-      <ObjectFileOutput>Src/Shaders/PixelLightingWithAlpha_ps.cso</ObjectFileOutput>
-    </FxCompile>
-    <FxCompile Include="Src\Shaders\PixelLighting_ps.hlsl">
-      <ShaderType>Pixel</ShaderType>
-      <ObjectFileOutput>Src/Shaders/PixelLighting_ps.cso</ObjectFileOutput>
-    </FxCompile>
-    <FxCompile Include="Src\Shaders\PixelLighting_vs.hlsl">
-      <ShaderType>Vertex</ShaderType>
-      <ObjectFileOutput>Src/Shaders/PixelLighting_vs.cso</ObjectFileOutput>
-      <AdditionalOptions>/WX %(AdditionalOptions)</AdditionalOptions>
-    </FxCompile>
-    <FxCompile Include="Src\Shaders\TerrainShader_ps.hlsl">
-      <ShaderType>Pixel</ShaderType>
-      <ObjectFileOutput>Src/Shaders/TerrainShader_ps.cso</ObjectFileOutput>
-    </FxCompile>
-    <FxCompile Include="Src\Shaders\Triangle_Normals_gs.hlsl">
-      <ShaderType>Geometry</ShaderType>
-      <ObjectFileOutput>Src/Shaders/Triangle_Normals_gs.cso</ObjectFileOutput>
-    </FxCompile>
-    <FxCompile Include="Src\Shaders\WorldTransformOnly_vs.hlsl">
-      <ShaderType>Vertex</ShaderType>
-      <ObjectFileOutput>Src/Shaders/WorldTransformOnly_vs.cso</ObjectFileOutput>
-      <AdditionalOptions>/WX %(AdditionalOptions)</AdditionalOptions>
-    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shaders\Common.hlsli" />

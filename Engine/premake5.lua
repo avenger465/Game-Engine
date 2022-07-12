@@ -33,7 +33,6 @@ project "Engine"
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.ImGuiBackends}",
 		"%{IncludeDir.DirectX}",
-		"%{IncludeDir.TinyXML2}"
 	}
 
 	libdirs

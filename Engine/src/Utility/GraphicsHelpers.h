@@ -8,6 +8,7 @@
 
 #include "../Math/CMatrix4x4.h"
 #include "Common/Common.h"
+#include "Renderer\DirectX11Renderer\Renderer.h"
 
 
 
@@ -17,15 +18,7 @@
 
 // Template function to update a constant buffer. Pass the DirectX constant buffer object and the C++ data structure
 // you want to update it with. The structure will be copied in full over to the GPU constant buffer, where it will
-// be available to shaders. This is used to update model and camera positions, lighting data etc.
-template <class T>
-void UpdateConstantBuffer(ID3D11Buffer* buffer, const T& bufferData)
-{
-    D3D11_MAPPED_SUBRESOURCE cb;
-    gD3DContext->Map(buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &cb);
-    memcpy(cb.pData, &bufferData, sizeof(T));
-    gD3DContext->Unmap(buffer, 0);
-}
+
 
 template <class T>
 void UpdateConstantBuffer(ID3D11DeviceContext* deviceContext, ID3D11Buffer* buffer, const T& bufferData)
@@ -45,6 +38,9 @@ void UpdateConstantBuffer(ID3D11DeviceContext* deviceContext, ID3D11Buffer* buff
 // This function requires you to pass a ID3D11Resource* (e.g. &gTilesDiffuseMap), which manages the GPU memory for the
 // texture and also a ID3D11ShaderResourceView* (e.g. &gTilesDiffuseMapSRV), which allows us to use the texture in shaders
 // The function will fill in these pointers with usable data. Returns false on failure
+bool LoadTexture(Engine::Renderer* renderer, std::string filename, ID3D11Resource** texture, ID3D11ShaderResourceView** textureSRV);
+
+
 
 //--------------------------------------------------------------------------------------
 // Camera helpers
@@ -54,8 +50,11 @@ void UpdateConstantBuffer(ID3D11DeviceContext* deviceContext, ID3D11Buffer* buff
 // - Aspect ratio is screen width / height (like 4:3, 16:9)
 // - FOVx is the viewing angle from left->right (high values give a fish-eye look),
 // - near and far clip are the range of z distances that can be rendered
-CMatrix4x4 MakeProjectionMatrix(float aspectRatio = 4.0f / 3.0f, float FOVx = ToRadians(60),
+CMatrix4x4 MakeProjectionMatrix(float aspectRatio = 4.0f / 3.0f, float FOVx = gen::ToRadians(60),
                                 float nearClip = 0.1f, float farClip = 10000.0f);
+
+
+ID3DBlob* CreateSignatureForVertexLayout(const D3D11_INPUT_ELEMENT_DESC vertexLayout[], int numElements);
 
 
 #endif //_SCENE_HELPERS_H_INCLUDED_

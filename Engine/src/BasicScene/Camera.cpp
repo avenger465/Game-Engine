@@ -8,8 +8,7 @@
 
 
 // Control the camera's position and rotation using keys provided
-void Camera::Control(float frameTime, KeyCode turnUp, KeyCode turnDown, KeyCode turnLeft, KeyCode turnRight,
-                                      KeyCode moveForward, KeyCode moveBackward, KeyCode moveLeft, KeyCode moveRight)
+void Camera::Control(float frameTime)
 {
 	//**** ROTATION ****
 	if (KeyHeld(Key_Down))

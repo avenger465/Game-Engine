@@ -1,5 +1,7 @@
 #pragma once
 
+#define _USE_MATH_DEFINES
+
 //------------------------//
 //	 String Manipulation
 //------------------------//
@@ -32,6 +34,7 @@
 //------------------------//
 #include <sstream>
 #include <fstream>
+#include <filesystem>
 #include <iostream>
 
 
@@ -45,7 +48,7 @@
 //------------------------//
 //	  Asset Importing
 //------------------------//
-#include <assimp/Importer.hpp>
-#include <assimp/DefaultLogger.hpp>
-#include <assimp/postprocess.h>
-#include <assimp/scene.h>
+//#include <assimp/Importer.hpp>
+//#include <assimp/DefaultLogger.hpp>
+//#include <assimp/postprocess.h>
+//#include <assimp/scene.h>

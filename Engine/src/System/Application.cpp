@@ -1,7 +1,6 @@
 #include "epch.h"
-
-
 #include "Application.h"
+#include "Data/ParseApplicationSettings.h"
 
 
 namespace Engine
@@ -10,12 +9,15 @@ namespace Engine
 	{
 		WindowProperties WindowProps;
 
-		//WindowProps = 
+		ParseApplicationSettings ApplicationSettings;
+
+		//WindowProps = ApplicationSettings.ReadWindowSettings("data/WindowedSettings.xml");
+		WindowProps = ApplicationSettings.ReadWindowSettings("data/FullscreenSettings.xml");
 
 		m_Renderer = NewRenderer(WindowProps.RenderType);
 		if (m_Renderer != nullptr)
 		{
-			m_Window = std::unique_ptr<IWindow>(IWindow::Create(WindowProps));
+			m_Window = std::unique_ptr<IWindow>(IWindow::Create(WindowProps, m_Renderer));
 			if (!m_Window)
 			{
 

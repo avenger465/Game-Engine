@@ -6,7 +6,12 @@
 namespace Engine
 {
 
-	enum class ERenderingType
+	typedef unsigned int TInt32;
+
+	typedef TInt32 EntityUID;
+	const EntityUID SystemUID = 0xffffffff;
+
+	enum class ERenderingAPI
 	{
 		None = 0,
 		DirectX11
@@ -18,13 +23,13 @@ namespace Engine
 		uint32_t Width;
 		uint32_t Height;
 
-		ERenderingType RenderType;
+		ERenderingAPI RenderType;
 		HWND Hwnd = NULL;
 
 		WindowProperties(const std::string& title = "Engine",
 			uint32_t width = 1600,
 			uint32_t height = 900,
-			ERenderingType renderType = ERenderingType::DirectX11)
+			ERenderingAPI renderType = ERenderingAPI::DirectX11)
 			: Title(title), Width(width), Height(height), RenderType(renderType)
 		{
 		}

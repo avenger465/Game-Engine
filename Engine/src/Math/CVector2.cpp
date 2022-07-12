@@ -72,13 +72,13 @@ CVector2 Normalise(const CVector2& v)
     float lengthSq = v.x*v.x + v.y*v.y;
 
     // Ensure vector is not zero length (use function from MathHelpersh.h to check if float is approximately 0)
-    if (IsZero(lengthSq))
+    if (gen::IsZero(lengthSq))
     {
         return CVector2{ 0.0f, 0.0f };
     }
     else
     {
-        float invLength = InvSqrt(lengthSq);
+        float invLength = gen::InvSqrt(lengthSq);
         return CVector2{ v.x * invLength, v.y * invLength };
     }
 }

@@ -19,6 +19,12 @@
     <Filter Include="src\Data">
       <UniqueIdentifier>{B6241DCF-A2F1-77DA-CB0A-6682B736AD68}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\ECS">
+      <UniqueIdentifier>{F76D2FA9-634D-AE44-6C65-391BD8C314A6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ECS\Components">
+      <UniqueIdentifier>{AC4A8D64-982E-4EBA-018F-480DED91383C}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Math">
       <UniqueIdentifier>{261422CF-12E1-7CDA-3BFA-6A822726B268}</UniqueIdentifier>
     </Filter>
@@ -28,14 +34,17 @@
     <Filter Include="src\Renderer">
       <UniqueIdentifier>{73D1DFBF-5F34-6F64-08BA-A71AF4FB3AE7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Shaders">
-      <UniqueIdentifier>{06ADC7FB-7262-40F1-FB56-3AC8670B37F5}</UniqueIdentifier>
+    <Filter Include="src\Renderer\DirectX11Renderer">
+      <UniqueIdentifier>{6EAA87FE-5AD0-5165-4316-D7302FDB7631}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\System">
       <UniqueIdentifier>{A1A9A82F-8D61-EA7C-F668-C3D8E23F856D}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\System\Interfaces">
       <UniqueIdentifier>{5427C3B6-C093-7EB1-8987-160FF5B2A019}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\TerrainGenerationScene">
+      <UniqueIdentifier>{CBD69FF1-B7E6-4BC2-20A0-B0E00CCF3A5B}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Utility">
       <UniqueIdentifier>{70464FB2-DCFB-C7A7-65F0-C17ED1A4BEAB}</UniqueIdentifier>
@@ -51,12 +60,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\BasicScene\BaseScene.h">
-      <Filter>src\BasicScene</Filter>
-    </ClInclude>
-    <ClInclude Include="src\BasicScene\CLight.h">
-      <Filter>src\BasicScene</Filter>
-    </ClInclude>
     <ClInclude Include="src\BasicScene\Camera.h">
       <Filter>src\BasicScene</Filter>
     </ClInclude>
@@ -72,8 +75,35 @@
     <ClInclude Include="src\Data\Model.h">
       <Filter>src\Data</Filter>
     </ClInclude>
+    <ClInclude Include="src\Data\ParseApplicationSettings.h">
+      <Filter>src\Data</Filter>
+    </ClInclude>
     <ClInclude Include="src\Data\State.h">
       <Filter>src\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Data\tinyxml2.h">
+      <Filter>src\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\BaseComponent.h">
+      <Filter>src\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\Components\LightComponent.h">
+      <Filter>src\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\Components\MeshComponent.h">
+      <Filter>src\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\Components\RendererComponent.h">
+      <Filter>src\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\Components\TransformComponent.h">
+      <Filter>src\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\Entity.h">
+      <Filter>src\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\EntityManager.h">
+      <Filter>src\ECS</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine.h">
       <Filter>src</Filter>
@@ -99,16 +129,16 @@
     <ClInclude Include="src\Platforms\WindowsPlatform.h">
       <Filter>src\Platforms</Filter>
     </ClInclude>
-    <ClInclude Include="src\Renderer\Renderer.h">
-      <Filter>src\Renderer</Filter>
+    <ClInclude Include="src\Renderer\DirectX11Renderer\DirectX11Shaders.h">
+      <Filter>src\Renderer\DirectX11Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\Shaders\Shader.h">
-      <Filter>src\Shaders</Filter>
+    <ClInclude Include="src\Renderer\DirectX11Renderer\DirectX11States.h">
+      <Filter>src\Renderer\DirectX11Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\DirectX11Renderer\Renderer.h">
+      <Filter>src\Renderer\DirectX11Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\System\Application.h">
-      <Filter>src\System</Filter>
-    </ClInclude>
-    <ClInclude Include="src\System\Direct3DSetup.h">
       <Filter>src\System</Filter>
     </ClInclude>
     <ClInclude Include="src\System\EntryPoint.h">
@@ -117,19 +147,28 @@
     <ClInclude Include="src\System\Interfaces\IRenderer.h">
       <Filter>src\System\Interfaces</Filter>
     </ClInclude>
+    <ClInclude Include="src\System\Interfaces\IScene.h">
+      <Filter>src\System\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="src\System\Interfaces\IShader.h">
+      <Filter>src\System\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="src\System\Interfaces\IState.h">
+      <Filter>src\System\Interfaces</Filter>
+    </ClInclude>
     <ClInclude Include="src\System\Interfaces\IWindow.h">
       <Filter>src\System\Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="src\System\System.h">
-      <Filter>src\System</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Utility\CResourceManager.h">
-      <Filter>src\Utility</Filter>
+    <ClInclude Include="src\TerrainGenerationScene\TerrainGenerationScene.h">
+      <Filter>src\TerrainGenerationScene</Filter>
     </ClInclude>
     <ClInclude Include="src\Utility\ColourRGBA.h">
       <Filter>src\Utility</Filter>
     </ClInclude>
     <ClInclude Include="src\Utility\GraphicsHelpers.h">
+      <Filter>src\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utility\HashTable.h">
       <Filter>src\Utility</Filter>
     </ClInclude>
     <ClInclude Include="src\Utility\Input.h">
@@ -149,12 +188,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\BasicScene\BaseScene.cpp">
-      <Filter>src\BasicScene</Filter>
-    </ClCompile>
-    <ClCompile Include="src\BasicScene\CLight.cpp">
-      <Filter>src\BasicScene</Filter>
-    </ClCompile>
     <ClCompile Include="src\BasicScene\Camera.cpp">
       <Filter>src\BasicScene</Filter>
     </ClCompile>
@@ -164,8 +197,32 @@
     <ClCompile Include="src\Data\Model.cpp">
       <Filter>src\Data</Filter>
     </ClCompile>
+    <ClCompile Include="src\Data\ParseApplicationSettings.cpp">
+      <Filter>src\Data</Filter>
+    </ClCompile>
     <ClCompile Include="src\Data\State.cpp">
       <Filter>src\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Data\tinyxml2.cpp">
+      <Filter>src\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\Components\LightComponent.cpp">
+      <Filter>src\ECS\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\Components\MeshComponent.cpp">
+      <Filter>src\ECS\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\Components\RendererComponent.cpp">
+      <Filter>src\ECS\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\Components\TransformComponent.cpp">
+      <Filter>src\ECS\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\Entity.cpp">
+      <Filter>src\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\EntityManager.cpp">
+      <Filter>src\ECS</Filter>
     </ClCompile>
     <ClCompile Include="src\Math\CMatrix4x4.cpp">
       <Filter>src\Math</Filter>
@@ -185,28 +242,34 @@
     <ClCompile Include="src\Platforms\WindowsPlatform.cpp">
       <Filter>src\Platforms</Filter>
     </ClCompile>
-    <ClCompile Include="src\Renderer\Renderer.cpp">
-      <Filter>src\Renderer</Filter>
+    <ClCompile Include="src\Renderer\DirectX11Renderer\DirectX11Shaders.cpp">
+      <Filter>src\Renderer\DirectX11Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\Shaders\Shader.cpp">
-      <Filter>src\Shaders</Filter>
+    <ClCompile Include="src\Renderer\DirectX11Renderer\DirectX11States.cpp">
+      <Filter>src\Renderer\DirectX11Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer\DirectX11Renderer\Renderer.cpp">
+      <Filter>src\Renderer\DirectX11Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\System\Application.cpp">
-      <Filter>src\System</Filter>
-    </ClCompile>
-    <ClCompile Include="src\System\Direct3DSetup.cpp">
       <Filter>src\System</Filter>
     </ClCompile>
     <ClCompile Include="src\System\Interfaces\IRenderer.cpp">
       <Filter>src\System\Interfaces</Filter>
     </ClCompile>
-    <ClCompile Include="src\System\System.cpp">
-      <Filter>src\System</Filter>
+    <ClCompile Include="src\System\Interfaces\IShader.cpp">
+      <Filter>src\System\Interfaces</Filter>
     </ClCompile>
-    <ClCompile Include="src\Utility\CResourceManager.cpp">
-      <Filter>src\Utility</Filter>
+    <ClCompile Include="src\System\Interfaces\IState.cpp">
+      <Filter>src\System\Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TerrainGenerationScene\TerrainGenerationScene.cpp">
+      <Filter>src\TerrainGenerationScene</Filter>
     </ClCompile>
     <ClCompile Include="src\Utility\GraphicsHelpers.cpp">
+      <Filter>src\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utility\HashTable.cpp">
       <Filter>src\Utility</Filter>
     </ClCompile>
     <ClCompile Include="src\Utility\Input.cpp">
@@ -224,38 +287,6 @@
     <ClCompile Include="vendor\imgui\backends\imgui_impl_win32.cpp">
       <Filter>vendor\imgui\backends</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="Src\Shaders\BasicTransform_vs.hlsl">
-      <Filter>Src\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Src\Shaders\LightModel_ps.hlsl">
-      <Filter>Src\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Src\Shaders\NormalMapping_ps.hlsl">
-      <Filter>Src\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Src\Shaders\NormalMapping_vs.hlsl">
-      <Filter>Src\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Src\Shaders\PixelLightingWithAlpha_ps.hlsl">
-      <Filter>Src\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Src\Shaders\PixelLighting_ps.hlsl">
-      <Filter>Src\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Src\Shaders\PixelLighting_vs.hlsl">
-      <Filter>Src\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Src\Shaders\TerrainShader_ps.hlsl">
-      <Filter>Src\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Src\Shaders\Triangle_Normals_gs.hlsl">
-      <Filter>Src\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Src\Shaders\WorldTransformOnly_vs.hlsl">
-      <Filter>Src\Shaders</Filter>
-    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shaders\Common.hlsli">

@@ -7,7 +7,7 @@
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
 
-#include "Renderer\Renderer.h"
+#include "Renderer/DirectX11Renderer/Renderer.h"
 
 #include "Utility\GraphicsHelpers.h"
 #include "Utility\ColourRGBA.h"
@@ -17,20 +17,14 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 
 namespace Engine
 {
-	IWindow* IWindow::Create(WindowProperties& props)
+	IWindow* IWindow::Create(WindowProperties& props, IRenderer* renderer)
 	{
-		return new Window(props);
+		return new Window(props, renderer);
 	}
-	/*IWindow* Create(WindowProperties& WindowProps)
-	{
-		return new Window(WindowProps);
-	}*/
 
-	/*Window::Window(Window)*/
-
-	Window::Window(WindowProperties& WindowProps)
+	Window::Window(WindowProperties& WindowProps, IRenderer* renderer)
 	{
-		Init(WindowProps);
+		Init(WindowProps, renderer);
 	}
 
 	Window::~Window()
@@ -38,12 +32,12 @@ namespace Engine
 		Shutdown();
 	}
 
-	BOOL Window::Init(WindowProperties& props)
+	BOOL Window::Init(WindowProperties& props, IRenderer* renderer)
 	{
 		m_windowClassName = L"WindowClass";
 		m_Window = S_OK;
 
-		m_Window = CreateApplicationWindow(props);
+		m_Window = CreateApplicationWindow(props, renderer);
 
 		return TRUE;
 	}
@@ -61,7 +55,7 @@ namespace Engine
 		DestroyWindow(m_hWnd);
 	}
 
-	HRESULT Window::CreateApplicationWindow(WindowProperties& props)
+	HRESULT Window::CreateApplicationWindow(WindowProperties& props, IRenderer* renderer)
 	{
 		// Get a stock icon to show on the taskbar for this program.
 		SHSTOCKICONINFO stockIcon;
@@ -90,10 +84,18 @@ namespace Engine
 			return false;
 		}
 
-
 		// Select the type of window to show our application in
-		DWORD windowStyle = WS_OVERLAPPEDWINDOW; // Standard window
-		//DWORD windowStyle = WS_POPUP;          // Alternative: borderless. If you also set the viewport size to the monitor resolution, you 
+		
+
+		Scene = new TerrainGenerationScene(renderer, CVector3(0, 0, 0), 5, ColourRGBA(0.5f,0.5f,0.5f));
+
+		DWORD windowStyle;
+
+		if(props.Height == 1080 && props.Width == 1920) windowStyle = WS_POPUP;
+		else windowStyle = WS_OVERLAPPEDWINDOW;
+
+		 // Standard window
+		          // Alternative: borderless. If you also set the viewport size to the monitor resolution, you 
 												 // get a "fullscreen borderless" window, which works better with alt-tab than DirectX fullscreen,
 												 // which is an option in Direct3DSetup.cpp. DirectX fullscreen has slight better performance though.
 
@@ -166,6 +168,11 @@ namespace Engine
 		//	return 0;
 		//}
 
+		if (!(Scene->InitGeometry() && Scene->InitScene()))
+		{
+			return 0;
+		}
+
 
 		m_Timer.Start();
 		// Main message loop - this is a Windows equivalent of the loop in a TL-Engine application
@@ -197,6 +204,7 @@ namespace Engine
 				float frameTime = m_Timer.GetLapTime();
 				//Scene->UpdateScene(frameTime, HWnd);
 
+				RenderScene(renderer);
 				//// Render the scene
 				//Scene->RenderScene(frameTime);
 
@@ -215,9 +223,9 @@ namespace Engine
 		//*******************************
 
 		ImGui_ImplDX11_Shutdown();
-		ImGui_ImplWin32_Shutdown();
-		ImGui::DestroyContext();
-
+		ImGui_ImplWin32_Shutdown();   
+		ImGui::DestroyContext();  
+ 
 		//*******************************
 	}
 
@@ -316,7 +324,7 @@ namespace Engine
 
 
 		//// Common settings ////
-		if (currentRenderer->GetRenderingType() == ERenderingType::DirectX11) // Checks the correct renderer
+		if (currentRenderer->GetRenderingType() == ERenderingAPI::DirectX11) // Checks the correct renderer
 		{
 			//DirectX11Renderer* d11Renderer = static_cast<DirectX11Renderer*>(m_Renderer); // Casts the renderer to the correct renderer
 
@@ -333,7 +341,7 @@ namespace Engine
 			currentRenderer->GetDeviceContext()->OMSetRenderTargets(1, &backBuffer, currentRenderer->GetDepthStencil());
 
 			// Clear the back buffer to a fixed colour and the depth buffer to the far distance
-			ColourRGBA backgroundColour = ColourRGBA{0.5f, 0.5f, 0.5f};// m_Scenes[m_SceneIndex]->GetBackgroundColour();
+			ColourRGBA backgroundColour = ColourRGBA{1.0f, 0.5f, 0.5f};// m_Scenes[m_SceneIndex]->GetBackgroundColour();
 			currentRenderer->GetDeviceContext()->ClearRenderTargetView(currentRenderer->GetBackBuffer(), &backgroundColour.r);
 			currentRenderer->GetDeviceContext()->ClearDepthStencilView(currentRenderer->GetDepthStencil(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 
@@ -349,8 +357,6 @@ namespace Engine
 
 			// Render the scene from the main camera
 			RenderSceneFromCamera(renderer);
-
-
 
 			ImGui::Render();
 			currentRenderer->GetDeviceContext()->OMSetRenderTargets(1, &backBuffer, nullptr);
@@ -368,7 +374,7 @@ namespace Engine
 	{
 
 		Renderer* currentRenderer = static_cast<Renderer*>(renderer);
-		if (currentRenderer->GetRenderingType() == ERenderingType::DirectX11)
+		if (currentRenderer->GetRenderingType() == ERenderingAPI::DirectX11)
 		{
 			// Set camera matrices in the constant buffer and send over to GPU
 			//currentRenderer->PerFrameConstants.viewMatrix = m_Scenes[m_SceneIndex]->GetCamera()->ViewMatrix();
@@ -380,6 +386,8 @@ namespace Engine
 			currentRenderer->GetDeviceContext()->VSSetConstantBuffers(0, 1, &currentRenderer->PerFrameConstantBuffer); // First parameter must match constant buffer number in the shader 
 			currentRenderer->GetDeviceContext()->PSSetConstantBuffers(0, 1, &currentRenderer->PerFrameConstantBuffer);
 
+
+			Scene->RenderSceneEntities();
 		}
 	}
 }

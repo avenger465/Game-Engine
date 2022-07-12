@@ -10,10 +10,10 @@ namespace Engine
 
 		virtual void ShutdownRenderer() = 0;
 
-		virtual const ERenderingType GetRenderingType() = 0;
+		virtual const ERenderingAPI GetRenderingType() = 0;
 
 		virtual WindowProperties GetWindowProperties() = 0;
 	};
 
-	IRenderer* NewRenderer(const ERenderingType type);
+	IRenderer* NewRenderer(const ERenderingAPI type);
 }

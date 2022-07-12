@@ -21,16 +21,15 @@ public:
 	//-------------------------------------
 
 	// Constructor - initialise all settings, sensible defaults provided for everything.
-	Camera(CVector3 position = {0,0,0}, CVector3 rotation = {0,0,0}, 
-           float fov = PI/3, float aspectRatio = 4.0f / 3.0f, float nearClip = 0.1f, float farClip = 100000.0f)
+	Camera(CVector3 position = {0,0,0}, CVector3 rotation = {0,0,0},
+           float fov = M_PI/3, float aspectRatio = 4.0f / 3.0f, float nearClip = 0.1f, float farClip = 100000.0f)
         : mPosition(position), mRotation(rotation), mFOVx(fov), mAspectRatio(aspectRatio), mNearClip(nearClip), mFarClip(farClip)
     {
     }
 
 
 	// Control the camera's position and rotation using keys provided
-	void Control( float frameTime, KeyCode turnUp, KeyCode turnDown, KeyCode turnLeft, KeyCode turnRight,  
-	              KeyCode moveForward, KeyCode moveBackward, KeyCode moveLeft, KeyCode moveRight);
+	void Control( float frameTime);
 
 
 	//-------------------------------------

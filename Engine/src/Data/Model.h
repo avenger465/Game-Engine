@@ -8,103 +8,92 @@
 #include "Math/CVector3.h"
 #include "Math/CMatrix4x4.h"
 #include "Utility/Input.h"
+#include "Mesh.h"
 
 #ifndef _MODEL_H_INCLUDED_
 #define _MODEL_H_INCLUDED_
 
-class Mesh;
-
-class Model
+namespace Engine
 {
-public:
-	//-------------------------------------
-	// Construction / Usage
-	//-------------------------------------
+	class Model
+	{
+	public:
+		//-------------------------------------
+		// Construction / Usage
+		//-------------------------------------
 
-    Model(Mesh* mesh, CVector3 position = { 0,0,0 }, CVector3 rotation = { 0,0,0 }, float scale = 1);
+		Model(Mesh* mesh, CVector3 position = { 0,0,0 }, CVector3 rotation = { 0,0,0 }, float scale = 1);
 
-    // The render function simply passes this model's matrices over to Mesh:Render.
-    // All other per-frame constants must have been set already along with shaders, textures, samplers, states etc.
-    //void Render(ID3D11Buffer* buffer, PerModelConstants& ModelConstants);
-
-
-	// Control a given node in the model using keys provided. Amount of motion performed depends on frame time
-	void Control(int node, float frameTime, KeyCode turnUp, KeyCode turnDown, KeyCode turnLeft, KeyCode turnRight,  
-				                            KeyCode turnCW, KeyCode turnCCW, KeyCode moveForward, KeyCode moveBackward );
+		// The render function simply passes this model's matrices over to Mesh:Render.
+		// All other per-frame constants must have been set already along with shaders, textures, samplers, states etc.
+		void Render();
 
 
-	//-------------------------------------
-	// Data access
-	//-------------------------------------
+		// Control a given node in the model using keys provided. Amount of motion performed depends on frame time
+		void Control(int node, float frameTime, KeyCode turnUp, KeyCode turnDown, KeyCode turnLeft, KeyCode turnRight,
+			KeyCode turnCW, KeyCode turnCCW, KeyCode moveForward, KeyCode moveBackward);
 
-    //********************************
-    // All functions now accept a "node" parameter which specifies which node in the hierarchy to use. Defaults to 0, the root.
-    // The hierarchy is stored in depth-first order
 
-	// Getters - model only stores matrices. Position, rotation and scale are extracted if requested.
-	CVector3 Position(int node = 0)  { return mWorldMatrices[node].GetRow(3); }         // Position is on bottom row of matrix
-	CVector3 Rotation(int node = 0)  { return mWorldMatrices[node].GetEulerAngles(); }  // Getting angles from a matrix is complex - see .cpp file
-	CVector3 Scale(int node = 0)     { return { Length(mWorldMatrices[node].GetRow(0)),
-                                                Length(mWorldMatrices[node].GetRow(1)), 
-                                                Length(mWorldMatrices[node].GetRow(2)) }; } // Scale is length of rows 0-2 in matrix
-	CMatrix4x4 WorldMatrix(int node = 0)  { return mWorldMatrices[node]; }
+		//-------------------------------------
+		// Data access
+		//-------------------------------------
 
-    // Setters - model only stores matricies , so if user sets position, rotation or scale, just update those aspects of the matrix
-	void SetPosition(CVector3 position, int node = 0)  { mWorldMatrices[node].SetRow(3, position); }
+		//********************************
+		// All functions now accept a "node" parameter which specifies which node in the hierarchy to use. Defaults to 0, the root.
+		// The hierarchy is stored in depth-first order
 
-	void SetRotation(CVector3 rotation, int node = 0)
-    {
-        // To put rotation angles into a matrix we need to build the matrix from scratch to make sure we retain existing scaling and position
-        mWorldMatrices[node] = MatrixScaling(Scale(node)) *
-                               MatrixRotationZ(rotation.z) * MatrixRotationX(rotation.x) * MatrixRotationY(rotation.y) *
-                               MatrixTranslation(Position(node));
-    }
+		// Getters - model only stores matrices. Position, rotation and scale are extracted if requested.
+		CVector3 Position(int node = 0) { return mWorldMatrices[node].GetRow(3); }         // Position is on bottom row of matrix
+		CVector3 Rotation(int node = 0) { return mWorldMatrices[node].GetEulerAngles(); }  // Getting angles from a matrix is complex - see .cpp file
+		CVector3 Scale(int node = 0) {
+			return { Length(mWorldMatrices[node].GetRow(0)),
+					 Length(mWorldMatrices[node].GetRow(1)),
+					 Length(mWorldMatrices[node].GetRow(2)) };
+		} // Scale is length of rows 0-2 in matrix
+		CMatrix4x4 WorldMatrix(int node = 0) { return mWorldMatrices[node]; }
 
-	// Two ways to set scale: x,y,z separately, or all to the same value
-    // To set scale without affecting rotation, normalise each row, then multiply it by the scale value.
-	void SetScale(CVector3 scale, int node = 0)
-    {
-        mWorldMatrices[node].SetRow(0, Normalise(mWorldMatrices[node].GetRow(0)) * scale.x); 
-        mWorldMatrices[node].SetRow(1, Normalise(mWorldMatrices[node].GetRow(1)) * scale.y); 
-        mWorldMatrices[node].SetRow(2, Normalise(mWorldMatrices[node].GetRow(2)) * scale.z); 
-    }
-	void SetScale(float scale)  { SetScale({ scale, scale, scale });}
+		// Setters - model only stores matricies , so if user sets position, rotation or scale, just update those aspects of the matrix
+		void SetPosition(CVector3 position, int node = 0) { mWorldMatrices[node].SetRow(3, position); }
 
-    void SetWorldMatrix(CMatrix4x4 matrix, int node = 0)  { mWorldMatrices[node] = matrix; }
+		void SetRotation(CVector3 rotation, int node = 0)
+		{
+			// To put rotation angles into a matrix we need to build the matrix from scratch to make sure we retain existing scaling and position
+			mWorldMatrices[node] = MatrixScaling(Scale(node)) *
+				MatrixRotationZ(rotation.z) * MatrixRotationX(rotation.x) * MatrixRotationY(rotation.y) *
+				MatrixTranslation(Position(node));
+		}
 
-    //----------------//
-    //    New Code    //
-    //----------------//
+		// Two ways to set scale: x,y,z separately, or all to the same value
+		// To set scale without affecting rotation, normalise each row, then multiply it by the scale value.
+		void SetScale(CVector3 scale, int node = 0)
+		{
+			mWorldMatrices[node].SetRow(0, Normalise(mWorldMatrices[node].GetRow(0)) * scale.x);
+			mWorldMatrices[node].SetRow(1, Normalise(mWorldMatrices[node].GetRow(1)) * scale.y);
+			mWorldMatrices[node].SetRow(2, Normalise(mWorldMatrices[node].GetRow(2)) * scale.z);
+		}
+		void SetScale(float scale) { SetScale({ scale, scale, scale }); }
 
-    //Set the states that DirectX will use when rendering this model
-    void SetStates(ID3D11BlendState* BlendState, ID3D11DepthStencilState* DepthStencilState, ID3D11RasterizerState* Rasterizerstate);
+		void SetWorldMatrix(CMatrix4x4 matrix, int node = 0) { mWorldMatrices[node] = matrix; }
 
-    //Set the resources that the Pixel shader will need to render this model
-    void SetShaderResources(UINT TextureSlot, ID3D11ShaderResourceView* Texture);
+		//----------------//
+		//    New Code    //
+		//----------------//
+		//Resizes the model with the new HeighMap values that are generated
+		void ResizeModel(std::vector<std::vector<float>>& heightMap, int Width, CVector3 MinX, CVector3 MaxX);
 
-    //Set the resources that the Pixel shader will need to render this model.
-    //Adds a normal map if the model requires one
-    void SetShaderResources(UINT TextureSlot, ID3D11ShaderResourceView* Texture, UINT NormalMapSlot, ID3D11ShaderResourceView* NormalMap);
+		CMatrix4x4 GetWorldMatrix(int node = 0) { return mWorldMatrices[node]; }
+		//-------------------------------------
+		// Private data / members
+		//-------------------------------------
+	private:
+		Mesh* m_Mesh;
 
-    //Function overloading for the different scenarios of setting the shaders
-    void Setup(ID3D11VertexShader* VertexShader);
-    void Setup(ID3D11PixelShader* PixelShader);
-    void Setup(ID3D11VertexShader* VertexShader, ID3D11PixelShader* PixelShader);
-
-    //Resizes the model with the new HeighMap values that are generated
-    void ResizeModel(std::vector<std::vector<float>>& heightMap, int Width, CVector3 MinX, CVector3 MaxX);
-
-	//-------------------------------------
-	// Private data / members
-	//-------------------------------------
-private:
-    Mesh* mMesh;
-
-	// World matrices for the model
-    // Now that meshes have multiple parts, we need multiple matrices. The root matrix (the first one) is the world matrix
-    // for the entire model. The remaining matrices are relative to their parent part. The hierarchy is defined in the mesh (nodes)
-	std::vector<CMatrix4x4> mWorldMatrices;
-};
+		// World matrices for the model
+		// Now that meshes have multiple parts, we need multiple matrices. The root matrix (the first one) is the world matrix
+		// for the entire model. The remaining matrices are relative to their parent part. The hierarchy is defined in the mesh (nodes)
+		std::vector<CMatrix4x4> mWorldMatrices;
+	};
+}
 
 
 #endif //_MODEL_H_INCLUDED_

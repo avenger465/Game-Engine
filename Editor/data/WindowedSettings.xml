@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<WindowSettings>
+	<Title Name="Editor"/>
+	<Dimensions Height="900" Width="1600"/>
+	<RenderingAPI Type="DirectX11"/>
+</WindowSettings>
+
+<!--Control Settings-->
+
+<!--Distribution Settings-->
+
+<!--Settings-->

@@ -29,5 +29,10 @@ group "Dependencies"
 	include "Engine/vendor/imgui"
 group ""
 
+group "Core"
 include "Engine"
+group ""
+
+group "Tools"
 include "Editor"
+group ""

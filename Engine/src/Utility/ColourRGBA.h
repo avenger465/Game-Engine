@@ -1,9 +1,7 @@
 //--------------------------------------------------------------------------------------
 // ColourRGBA class (cut down version), to hold colours with float values
 //--------------------------------------------------------------------------------------
-
-#ifndef _COLOURRGBA_H_DEFINED_
-#define _COLOURRGBA_H_DEFINED_
+#pragma once
 
 class ColourRGBA
 {
@@ -38,5 +36,3 @@ public:
         a = pfElts[3];
     }
 };
-	
-#endif // _COLOURRGBA_H_DEFINED_
