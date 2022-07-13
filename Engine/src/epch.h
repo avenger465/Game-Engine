@@ -10,6 +10,14 @@
 #include <atlbase.h> // C-string to unicode conversion function CA2CT
 #include <stdint.h>
 #include <Windows.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>	
+
+#include "System\Log.h"
+#include "System\Base.h"
+
+#include "System\Base.h"
 
 
 //------------------------//
@@ -36,7 +44,6 @@
 #include <fstream>
 #include <filesystem>
 #include <iostream>
-
 
 //------------------------//
 //		Direct X

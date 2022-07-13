@@ -19,7 +19,7 @@ namespace Engine
 			std::filesystem::path MainPath = std::filesystem::current_path(); // Gets the current working directory
 
 		// Creates the path to the shader path
-			std::filesystem::path shaderPath = std::filesystem::current_path().parent_path().append("Engine\\source\\Graphics\\Shaders\\HLSL\\");
+			std::filesystem::path shaderPath = std::filesystem::current_path().parent_path().append("Engine\\src\\Renderer\\DirectX11Renderer\\Shaders\\");
 
 			std::filesystem::current_path(shaderPath); // Sets the current path to the shader path
 		}

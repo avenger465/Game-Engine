@@ -29,6 +29,7 @@ project "Engine"
 	includedirs
 	{
 		"src",
+		"vendor/spdlog/include",
 		"%{IncludeDir.Assimp}",
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.ImGuiBackends}",

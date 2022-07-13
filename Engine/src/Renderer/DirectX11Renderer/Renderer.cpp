@@ -1,5 +1,8 @@
 #include "epch.h"
+
 #include "Renderer.h"
+#pragma comment(lib, "dxgi.lib")
+
 
 namespace Engine
 {
@@ -16,6 +19,8 @@ namespace Engine
 
 		m_WindowProps = WindowProps;
 
+		GetHardwareInfo();
+
 		//// Initialise DirectX ////
 
 		// Create a Direct3D device (i.e. initialise D3D) and create a swap-chain (create a back buffer to render to)
@@ -31,6 +36,7 @@ namespace Engine
 		swapDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 		swapDesc.SampleDesc.Count = 1;
 		swapDesc.SampleDesc.Quality = 0;
+
 		UINT flags = D3D11_CREATE_DEVICE_DEBUG; // Set this to D3D11_CREATE_DEVICE_DEBUG to get more debugging information (in the "Output" window of Visual Studio)
 		hr = D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, 0, flags, 0, 0, D3D11_SDK_VERSION,
 			&swapDesc, &m_SwapChain, &m_D3DDevice, nullptr, &m_D3DContext);
@@ -40,7 +46,6 @@ namespace Engine
 			errorLog.ErrorMessage(m_Props, "Error creating Direct3D device");*/
 			return false;
 		}
-
 
 		// Get a "render target view" of back-buffer - standard behaviour
 		ID3D11Texture2D* backBuffer;
@@ -59,7 +64,6 @@ namespace Engine
 			errorLog.ErrorMessage(m_Props, "Error creating render target view");*/
 			return false;
 		}
-
 
 		//// Create depth buffer to go along with the back buffer ////
 
@@ -99,6 +103,8 @@ namespace Engine
 			return false;
 		}
 
+
+
 		// Create GPU-side constant buffers to receive the gPerFrameConstants and gPerModelConstants structures above
 		// These allow us to pass data from CPU to shaders such as lighting information or matrices
 		// See the comments above where these variable are declared and also the UpdateScene function
@@ -108,6 +114,81 @@ namespace Engine
 		{
 			/*ErrorLogger errorLog;
 			errorLog.ErrorMessage(m_Props, "Error creating constant buffers");*/
+			return false;
+		}
+
+		//**** Create Scene Texture ****//
+
+		// Using a helper function to load textures from files above. Here we create the Scene texture manually
+		// as we are creating a special kind of texture (one that we can render to). Many settings to prepare:
+		D3D11_TEXTURE2D_DESC SceneDesc = {};
+		SceneDesc.Width =  m_WindowProps.Width;  // Size of the portal texture determines its quality
+		SceneDesc.Height = m_WindowProps.Height;
+		SceneDesc.MipLevels = 1; // No mip-maps when rendering to textures (or we would have to render every level)
+		SceneDesc.ArraySize = 1;
+		SceneDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM; // RGBA texture (8-bits each)
+		SceneDesc.SampleDesc.Count = 1;
+		SceneDesc.SampleDesc.Quality = 0;
+		SceneDesc.Usage = D3D11_USAGE_DEFAULT;
+		SceneDesc.BindFlags = D3D10_BIND_RENDER_TARGET | D3D10_BIND_SHADER_RESOURCE; // IMPORTANT: Indicate we will use texture as render target, and pass it to shaders
+		SceneDesc.CPUAccessFlags = 0;
+		SceneDesc.MiscFlags = 0;
+		if (FAILED(m_D3DDevice->CreateTexture2D(&SceneDesc, NULL, &SceneTexture)))
+		{
+			//LastError = "Error creating Scene texture";
+			return false;
+		}
+
+		// We created the Scene texture above, now we get a "view" of it as a render target, i.e. get a special pointer to the texture that
+		// we use when rendering to it (see RenderScene function below)
+		if (FAILED(m_D3DDevice->CreateRenderTargetView(SceneTexture, NULL, &SceneRenderTarget)))
+		{
+			//LastError = "Error creating Scene render target view";
+			return false;
+		}
+
+		// We also need to send this texture (resource) to the shaders. To do that we must create a shader-resource "view"
+		D3D11_SHADER_RESOURCE_VIEW_DESC srDesc = {};
+		srDesc.Format = SceneDesc.Format;
+		srDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+		srDesc.Texture2D.MostDetailedMip = 0;
+		srDesc.Texture2D.MipLevels = 1;
+		if (FAILED(m_D3DDevice->CreateShaderResourceView(SceneTexture, &srDesc, &SceneTextureSRV)))
+		{
+			//LastError = "Error creating Scene shader resource view";
+			return false;
+		}
+
+
+		//**** Create Scene Depth Buffer ****//
+		//**** This depth buffer can be shared with any other textures of the same size
+		SceneDesc = {};
+		SceneDesc.Width =  m_WindowProps.Width; 
+		SceneDesc.Height = m_WindowProps.Height;
+		SceneDesc.MipLevels = 1;
+		SceneDesc.ArraySize = 1;
+		SceneDesc.Format = DXGI_FORMAT_D32_FLOAT; // Depth buffers contain a single float per pixel
+		SceneDesc.SampleDesc.Count = 1;
+		SceneDesc.SampleDesc.Quality = 0;
+		SceneDesc.Usage = D3D11_USAGE_DEFAULT;
+		SceneDesc.BindFlags = D3D10_BIND_DEPTH_STENCIL;
+		SceneDesc.CPUAccessFlags = 0;
+		SceneDesc.MiscFlags = 0;
+		if (FAILED(m_D3DDevice->CreateTexture2D(&SceneDesc, NULL, &SceneDepthStencil)))
+		{
+			//LastError = "Error creating Scene depth stencil texture";
+			return false;
+		}
+
+		// Create the depth stencil view
+		D3D11_DEPTH_STENCIL_VIEW_DESC sceneDescDSV = {};
+		sceneDescDSV.Format = SceneDesc.Format;
+		sceneDescDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+		sceneDescDSV.Texture2D.MipSlice = 0;
+		sceneDescDSV.Flags = 0;
+		if (FAILED(m_D3DDevice->CreateDepthStencilView(SceneDepthStencil, &sceneDescDSV, &SceneDepthStencilView)))
+		{
+			//LastError = "Error creating Scene depth stencil view";
 			return false;
 		}
 
@@ -152,6 +233,27 @@ namespace Engine
 	bool Renderer::LoadTextureFromFile(const char* filename, ID3D11ShaderResourceView** out_srv, int* out_width, int* out_height)
 	{
 		return false;
+	}
+	void Renderer::GetHardwareInfo()
+	{
+		IDXGIFactory* factory = nullptr;
+		HRESULT result = CreateDXGIFactory1(__uuidof(IDXGIFactory), (void**)&factory);
+
+		IDXGIAdapter* pAdapter;
+
+		DXGI_ADAPTER_DESC desc;
+		factory->EnumAdapters(0, &pAdapter);
+
+		pAdapter->GetDesc(&desc);
+		m_videoCardMemory = (int)(desc.DedicatedVideoMemory / 1024 / 1024);
+		E_CORE_INFO("{0} MB", m_videoCardMemory);
+
+		size_t stringLength = 0;
+		wcstombs_s(&stringLength, m_videoCardDescription, 128, desc.Description, 128);
+		E_CORE_INFO("{0}", m_videoCardDescription);
+
+		SAFE_RELEASE(pAdapter);
+		SAFE_RELEASE(factory);
 	}
 }
 

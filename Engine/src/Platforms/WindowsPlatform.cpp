@@ -37,6 +37,8 @@ namespace Engine
 		m_windowClassName = L"WindowClass";
 		m_Window = S_OK;
 
+
+		E_CORE_INFO("Creating window {0} {1}, {2}", props.Title, props.Width, props.Height);
 		m_Window = CreateApplicationWindow(props, renderer);
 
 		return TRUE;
@@ -87,22 +89,30 @@ namespace Engine
 		// Select the type of window to show our application in
 		
 
-		Scene = new TerrainGenerationScene(renderer, CVector3(0, 0, 0), 5, ColourRGBA(0.5f,0.5f,0.5f));
+		Scene = new TerrainGenerationScene(renderer, CVector3(0.5f, 0.5f, 0.5f), 5, ColourRGBA(0.5f,0.5f,0.5f));
 
 		DWORD windowStyle;
 
 		if(props.Height == 1080 && props.Width == 1920) windowStyle = WS_POPUP;
 		else windowStyle = WS_OVERLAPPEDWINDOW;
 
-		 // Standard window
-		          // Alternative: borderless. If you also set the viewport size to the monitor resolution, you 
-												 // get a "fullscreen borderless" window, which works better with alt-tab than DirectX fullscreen,
-												 // which is an option in Direct3DSetup.cpp. DirectX fullscreen has slight better performance though.
-
 		// Calculate overall dimensions for the window. We will render to the *inside* of the window. But the
 		// overall winder will be larger because it includes the borders, title bar etc. This code calculates
 		// the overall size of the window given our choice of viewport size.
+
 		RECT rc = { 0, 0, props.Width, props.Height };
+
+
+		//RECT desktop;
+		// Get a handle to the desktop window
+		//const HWND hDesktop = GetDesktopWindow();
+		// Get the size of screen to the variable desktop
+		//GetWindowRect(hDesktop, &desktop);
+		// The top left corner will have coordinates (0,0)
+		// and the bottom right corner will have coordinates
+		// (horizontal, vertical)
+
+
 		AdjustWindowRect(&rc, windowStyle, FALSE);
 
 		// Create window, the second parameter is the text that appears in the title bar
@@ -143,10 +153,11 @@ namespace Engine
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable; //Enable docking of the viewports 
+		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable; //Enable each window to be a seperate viewport
 
 		// Setup Dear ImGui style
-		ImGui::StyleColorsDark();
-		// ImGui::StyleColorsClassic();
+		//ImGui::StyleColorsDark();
 
 		// Setup Platform/Renderer bindings
 		ImGui_ImplWin32_Init(m_WindowProps.Hwnd);
@@ -160,13 +171,6 @@ namespace Engine
 		{
 			return 0;
 		}
-		// Initialise scene
-		//if (!m_SceneManager->LoadFirstScene())
-		//{
-		//	/*ErrorLogger errorLog;
-		//	errorLog.ErrorMessage(m_WindowProps, "Error Loading first scene");*/
-		//	return 0;
-		//}
 
 		if (!(Scene->InitGeometry() && Scene->InitScene()))
 		{
@@ -338,12 +342,15 @@ namespace Engine
 			// Set the back buffer as the target for rendering and select the main depth buffer.
 			// When finished the back buffer is sent to the "front buffer" - which is the monitor.
 			ID3D11RenderTargetView* backBuffer = currentRenderer->GetBackBuffer();
-			currentRenderer->GetDeviceContext()->OMSetRenderTargets(1, &backBuffer, currentRenderer->GetDepthStencil());
+			ID3D11RenderTargetView* SceneBuffer = currentRenderer->GetSceneRenderTarget();
 
 			// Clear the back buffer to a fixed colour and the depth buffer to the far distance
 			ColourRGBA backgroundColour = ColourRGBA{1.0f, 0.5f, 0.5f};// m_Scenes[m_SceneIndex]->GetBackgroundColour();
-			currentRenderer->GetDeviceContext()->ClearRenderTargetView(currentRenderer->GetBackBuffer(), &backgroundColour.r);
-			currentRenderer->GetDeviceContext()->ClearDepthStencilView(currentRenderer->GetDepthStencil(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+			currentRenderer->GetDeviceContext()->OMSetRenderTargets(1, &SceneBuffer, currentRenderer->GetSceneDepthStencil());
+
+			// Clear the back buffer to a fixed colour and the depth buffer to the far distance
+			currentRenderer->GetDeviceContext()->ClearRenderTargetView(SceneBuffer, &backgroundColour.r);
+			currentRenderer->GetDeviceContext()->ClearDepthStencilView(currentRenderer->GetSceneDepthStencil(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 
 			// Setup the viewport to the size of the main window
 			D3D11_VIEWPORT vp;
@@ -361,6 +368,15 @@ namespace Engine
 			ImGui::Render();
 			currentRenderer->GetDeviceContext()->OMSetRenderTargets(1, &backBuffer, nullptr);
 			ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+
+			//Check if multiple viewports are enabled and then call the appropriate functions
+			//call the updating of viewports on the platforms side
+			ImGuiIO& io = ImGui::GetIO(); (void)io;
+			if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+			{
+				ImGui::UpdatePlatformWindows();
+				ImGui::RenderPlatformWindowsDefault();
+			}
 			//// Scene completion ////
 
 			// When drawing to the off-screen back buffer is complete, we "present" the image to the front buffer (the screen)
@@ -385,7 +401,6 @@ namespace Engine
 			// Indicate that the constant buffer we just updated is for use in the vertex shader (VS) and pixel shader (PS)
 			currentRenderer->GetDeviceContext()->VSSetConstantBuffers(0, 1, &currentRenderer->PerFrameConstantBuffer); // First parameter must match constant buffer number in the shader 
 			currentRenderer->GetDeviceContext()->PSSetConstantBuffers(0, 1, &currentRenderer->PerFrameConstantBuffer);
-
 
 			Scene->RenderSceneEntities();
 		}

@@ -76,7 +76,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DXE_PLATFORM_WINDOWS;E_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\assimp\include;vendor\imgui;vendor\imgui\backends;vendor\DirectXTK;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\assimp\include;vendor\imgui;vendor\imgui\backends;vendor\DirectXTK;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -98,7 +98,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DXE_PLATFORM_WINDOWS;E_Release;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\assimp\include;vendor\imgui;vendor\imgui\backends;vendor\DirectXTK;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\assimp\include;vendor\imgui;vendor\imgui\backends;vendor\DirectXTK;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -123,7 +123,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DXE_PLATFORM_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\assimp\include;vendor\imgui;vendor\imgui\backends;vendor\DirectXTK;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\assimp\include;vendor\imgui;vendor\imgui\backends;vendor\DirectXTK;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -166,12 +166,14 @@
     <ClInclude Include="src\Renderer\DirectX11Renderer\DirectX11States.h" />
     <ClInclude Include="src\Renderer\DirectX11Renderer\Renderer.h" />
     <ClInclude Include="src\System\Application.h" />
+    <ClInclude Include="src\System\Base.h" />
     <ClInclude Include="src\System\EntryPoint.h" />
     <ClInclude Include="src\System\Interfaces\IRenderer.h" />
     <ClInclude Include="src\System\Interfaces\IScene.h" />
     <ClInclude Include="src\System\Interfaces\IShader.h" />
     <ClInclude Include="src\System\Interfaces\IState.h" />
     <ClInclude Include="src\System\Interfaces\IWindow.h" />
+    <ClInclude Include="src\System\Log.h" />
     <ClInclude Include="src\TerrainGenerationScene\TerrainGenerationScene.h" />
     <ClInclude Include="src\Utility\ColourRGBA.h" />
     <ClInclude Include="src\Utility\GraphicsHelpers.h" />
@@ -208,6 +210,7 @@
     <ClCompile Include="src\System\Interfaces\IRenderer.cpp" />
     <ClCompile Include="src\System\Interfaces\IShader.cpp" />
     <ClCompile Include="src\System\Interfaces\IState.cpp" />
+    <ClCompile Include="src\System\Log.cpp" />
     <ClCompile Include="src\TerrainGenerationScene\TerrainGenerationScene.cpp" />
     <ClCompile Include="src\Utility\GraphicsHelpers.cpp" />
     <ClCompile Include="src\Utility\HashTable.cpp" />

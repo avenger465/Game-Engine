@@ -3,6 +3,8 @@
 #include "Math\CVector3.h"
 #include "Math\CMatrix4x4.h"
 
+#include <winnt.h>
+
 
 struct PerFrameConstants
 {
@@ -30,6 +32,7 @@ struct PerModelConstants
 	float      paddingA;
 };
 
+
 namespace Engine
 {
 	class Renderer : public IRenderer
@@ -54,9 +57,16 @@ namespace Engine
 		ID3D11RenderTargetView* GetBackBuffer() { return m_BackBufferRenderTarget; } // Returns the DirectX11 BackBuffer
 		ID3D11DepthStencilView* GetDepthStencil() { return m_DepthStencil; } // Returns the DirectX11 Depth Stencil
 
+		ID3D11RenderTargetView* GetSceneRenderTarget() { return SceneRenderTarget; } // Returns the DirectX11 BackBuffer
+		ID3D11ShaderResourceView* GetSceneShaderResourceView() { return SceneTextureSRV; } // Returns the DirectX11 BackBuffer
+		ID3D11DepthStencilView* GetSceneDepthStencil() { return SceneDepthStencilView; } // Returns the DirectX11 Depth Stencil
+
 		ID3D11Buffer* CreateConstantBuffer(int size); // Function used for creating a constant buffer
 
 		bool LoadTextureFromFile(const char* filename, ID3D11ShaderResourceView** out_srv, int* out_width, int* out_height);
+
+	private:
+		void GetHardwareInfo();
 
 	public:
 		PerFrameConstants PerFrameConstants; // Used for setting per frame constant variables and sending them to the GPU
@@ -65,7 +75,9 @@ namespace Engine
 		PerModelConstants PerModelConstants;  // Used for setting per model constant variables and sending them to the GPU
 		ID3D11Buffer* PerModelConstantBuffer;
 
+
 	private:
+
 		// The main Direct3D (D3D) variables
 		ID3D11Device* m_D3DDevice = nullptr; // D3D device for overall features
 		ID3D11DeviceContext* m_D3DContext = nullptr; // D3D context for specific rendering tasks
@@ -78,6 +90,17 @@ namespace Engine
 		ID3D11Texture2D* m_DepthStencilTexture = nullptr; // The texture holding the depth values
 		ID3D11DepthStencilView* m_DepthStencil = nullptr; // The depth buffer referencing above texture
 
+		// The scene texture - each frame it is rendered to, then it is used as a texture for model
+		ID3D11Texture2D* SceneTexture = nullptr; // This object represents the memory used by the texture on the GPU
+		ID3D11RenderTargetView* SceneRenderTarget = nullptr; // This object is used when we want to render to the texture above
+		ID3D11ShaderResourceView* SceneTextureSRV = nullptr; // This object is used to give shaders access to the texture above (SRV = shader resource view)
+
+		ID3D11Texture2D* SceneDepthStencil = nullptr; // This object represents the memory used by the texture on the GPU
+		ID3D11DepthStencilView* SceneDepthStencilView = nullptr; // This object is used when we want to use the texture above as the depth buffer
+
 		WindowProperties m_WindowProps; // Used for getting the window properties
+
+		char m_videoCardDescription[128];
+		int m_videoCardMemory;
 	};
 }

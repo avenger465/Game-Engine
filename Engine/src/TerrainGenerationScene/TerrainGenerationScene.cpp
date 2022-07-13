@@ -64,8 +64,6 @@ namespace Engine
 			// Indicate that the constant buffer we just updated is for use in the vertex shader (VS) and pixel shader (PS)
 			d11Renderer->GetDeviceContext()->VSSetConstantBuffers(0, 1, &d11Renderer->PerFrameConstantBuffer); // First parameter must match constant buffer number in the shader 
 			d11Renderer->GetDeviceContext()->PSSetConstantBuffers(0, 1, &d11Renderer->PerFrameConstantBuffer);
-
-
 		}
 
 	}
@@ -73,6 +71,7 @@ namespace Engine
 	void TerrainGenerationScene::RenderSceneEntities()
 	{
 		m_EntityManager->RenderAllEntities();
+		IMGUI();
 	}
 
 	//Function to render the scene, called every frame
@@ -249,13 +248,14 @@ namespace Engine
 		//---------------------------------------------------------------------------------------------------------------------//
 		//First ImGui window created is a dock taken from the docking example in imgui_demo.cpp from the ImGui examples library//
 		//---------------------------------------------------------------------------------------------------------------------//
+		static bool dockspaceOpen = true;
 		static bool opt_fullscreen = true;
 		static bool opt_padding = false;
 		static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
 
 		// We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
 		// because it would be confusing to have two docking targets within each others.
-		ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking;
+		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 		if (opt_fullscreen)
 		{
 			const ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -282,21 +282,74 @@ namespace Engine
 		// all active windows docked into it will lose their parent and become undocked.
 		// We cannot preserve the docking relationship between an active window and an inactive docking, otherwise
 		// any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
-		if (!opt_padding)
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-		ImGui::Begin("DockSpace Demo", nullptr, window_flags);
-		if (!opt_padding)
-			ImGui::PopStyleVar();
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+		ImGui::Begin("DockSpace Demo", &dockspaceOpen, window_flags);
+		ImGui::PopStyleVar();
 
 		if (opt_fullscreen)
 			ImGui::PopStyleVar(2);
 
+		
 		// Submit the DockSpace
 		ImGuiIO& io = ImGui::GetIO();
+		ImGuiStyle& style = ImGui::GetStyle();
+		float minWinSizeX = style.WindowMinSize.x;
+		style.WindowMinSize.x = 370.0f;
 		if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
 		{
 			ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
 			ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
+		}
+		style.WindowMinSize.x = minWinSizeX;
+		
+		if (ImGui::BeginMenuBar())
+		{
+			if (ImGui::BeginMenu("File"))
+			{
+				if (ImGui::MenuItem("New", "Ctrl+N"))
+					std::cout << "New";
+					//NewScene();
+
+				if (ImGui::MenuItem("Open...", "Ctrl+O"))
+					std::cout << "Open";
+					//OpenScene();
+
+				if (ImGui::MenuItem("Save", "Ctrl+S"))
+					std::cout << "Save";
+					//SaveScene();
+
+				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S"))
+					std::cout << "Save as";
+					//SaveSceneAs();
+
+				ImGui::EndMenu();
+			}
+			ImGui::EndMenuBar();
+		}
+		ImGui::Begin("Stats");
+		ImGui::Text("Draw Calls: ");
+		ImGui::Text("quads: ");
+		ImGui::Text("vertices: ");
+		ImGui::Text("indices: ");
+		ImGui::End();
+
+		ImGui::Begin("Settings");
+		ImGui::End();
+
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
+		ImGui::Begin("Viewport");
+		auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
+		auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
+		auto viewportOffset = ImGui::GetWindowPos();
+
+		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+		CVector2 m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
+
+
+		if (m_Renderer->GetRenderingType() == ERenderingAPI::DirectX11)
+		{
+			Renderer* d11Renderer = static_cast<Renderer*>(m_Renderer);
+			ImGui::Image(d11Renderer->GetSceneShaderResourceView(), ImVec2{m_ViewportSize.x, m_ViewportSize.y}, ImVec2{0, 1}, ImVec2{1, 0});
 		}
 
 		//New ImGui window to contain the current scene rendered to a 2DTexture//
@@ -307,6 +360,10 @@ namespace Engine
 		//}
 
 		//End the ImGui window
+		ImGui::End();
+		ImGui::PopStyleVar();
+
+
 		ImGui::End();
 	}
 

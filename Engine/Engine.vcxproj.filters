@@ -141,6 +141,9 @@
     <ClInclude Include="src\System\Application.h">
       <Filter>src\System</Filter>
     </ClInclude>
+    <ClInclude Include="src\System\Base.h">
+      <Filter>src\System</Filter>
+    </ClInclude>
     <ClInclude Include="src\System\EntryPoint.h">
       <Filter>src\System</Filter>
     </ClInclude>
@@ -158,6 +161,9 @@
     </ClInclude>
     <ClInclude Include="src\System\Interfaces\IWindow.h">
       <Filter>src\System\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="src\System\Log.h">
+      <Filter>src\System</Filter>
     </ClInclude>
     <ClInclude Include="src\TerrainGenerationScene\TerrainGenerationScene.h">
       <Filter>src\TerrainGenerationScene</Filter>
@@ -262,6 +268,9 @@
     </ClCompile>
     <ClCompile Include="src\System\Interfaces\IState.cpp">
       <Filter>src\System\Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="src\System\Log.cpp">
+      <Filter>src\System</Filter>
     </ClCompile>
     <ClCompile Include="src\TerrainGenerationScene\TerrainGenerationScene.cpp">
       <Filter>src\TerrainGenerationScene</Filter>
