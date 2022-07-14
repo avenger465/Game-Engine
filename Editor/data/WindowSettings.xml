@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WindowSettings>
+    <Title Name="Engine"/>
+    <Dimensions Height="900" Width="1600"/>
+    <RenderingAPI Type="DirectX11"/>
+</WindowSettings>

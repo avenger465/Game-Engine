@@ -22,6 +22,24 @@ namespace Engine
 			std::filesystem::path shaderPath = std::filesystem::current_path().parent_path().append("Engine\\src\\Renderer\\DirectX11Renderer\\Shaders\\");
 
 			std::filesystem::current_path(shaderPath); // Sets the current path to the shader path
+
+			// Loads the vertex shaders
+			m_PixelLightingVertexShader = LoadVertexShader("PixelLighting_vs");
+			m_BasicTransformVertexShader = LoadVertexShader("BasicTransform_vs");
+
+			// Loads the pixel shaders
+			m_LightModelPixelShader = LoadPixelShader("LightModel_ps");
+			m_PixelLightingPixelShader = LoadPixelShader("PixelLighting_ps");
+
+			std::filesystem::current_path(MainPath); // Resets path to the main directory
+
+			// CHecks that the shaders are not nullptr
+			if (m_PixelLightingVertexShader == nullptr || m_PixelLightingPixelShader == nullptr ||
+				m_BasicTransformVertexShader == nullptr || m_SkinningVertexShader == nullptr || m_LightModelPixelShader == nullptr)
+			{
+				E_CORE_ERROR("Error Creating Shaders");
+				return false;
+			}
 		}
 
 		return true;

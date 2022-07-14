@@ -40,7 +40,7 @@ namespace Engine
 				{
 
 					std::filesystem::path MainPath = std::filesystem::current_path();
-
+					std::filesystem::current_path(MainPath);
 					std::filesystem::path meshPath = std::filesystem::current_path().parent_path().append("Engine\\");
 
 					std::filesystem::current_path(meshPath); // Sets the current path to the mesh path

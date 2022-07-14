@@ -11,6 +11,8 @@ namespace Engine
 		ParseApplicationSettings() {}
 		WindowProperties ReadWindowSettings(std::string filename);
 
+		void SaveWindowSettings(WindowProperties settings);
+
 	private:
 		ERenderingAPI GetRenderingAPI(std::string type);
 

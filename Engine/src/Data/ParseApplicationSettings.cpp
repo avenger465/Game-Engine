@@ -40,6 +40,40 @@ namespace Engine
 		return m_WindowProps;
 	}
 
+	void ParseApplicationSettings::SaveWindowSettings(WindowProperties settings)
+	{
+		std::filesystem::path mainPath = std::filesystem::current_path();
+		std::filesystem::path Path = std::filesystem::current_path().parent_path().append("Editor\\data");
+		std::filesystem::current_path(Path);
+
+		tinyxml2::XMLDocument doc;
+
+		tinyxml2::XMLDeclaration* decl = doc.NewDeclaration();
+		doc.InsertFirstChild(decl);
+
+		tinyxml2::XMLElement* root = doc.NewElement("WindowSettings");
+		doc.InsertEndChild(root);
+		tinyxml2::XMLElement* child = doc.NewElement("Title");
+		child->SetAttribute("Name", settings.Title.c_str());
+		root->InsertEndChild(child);
+
+		child = doc.NewElement("Dimensions");
+		child->SetAttribute("Height", settings.Height);
+		child->SetAttribute("Width", settings.Width);
+		root->InsertEndChild(child);
+
+		child = doc.NewElement("RenderingAPI");
+		std::string renderType = "";
+		if (settings.RenderType == ERenderingAPI::DirectX11)
+		{
+			renderType = "DirectX11";
+		}
+		child->SetAttribute("Type", renderType.c_str());
+		root->InsertEndChild(child);
+		doc.SaveFile("WindowSettings.xml");
+		std::filesystem::current_path(mainPath);
+	}
+
 	ERenderingAPI ParseApplicationSettings::GetRenderingAPI(std::string type)
 	{
 		if (type == "DirectX11")

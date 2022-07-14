@@ -1,4 +1,5 @@
 #include "TerrainGenerationScene.h"
+#include "Data\ParseApplicationSettings.h"
 
 namespace Engine
 {
@@ -20,11 +21,21 @@ namespace Engine
 
 		//Build the HeightMap with the value of 1
 		BuildHeightMap(1);
+		std::string path = "media/";
 
 		m_SceneCamera = new Camera();
 
 
 		m_EntityManager = new EntityManager(m_Renderer);
+
+		EntityTransform transform = EntityTransform();
+		transform.Scale = { 2.0f, 0.0f, 2.0f };
+		//transform.Rotation = {gen::ToRadians(180.0f), 0.0f, 0.0f};
+
+		m_EntityManager->CreateModelEntity("ground", path + "Ground.x", true, path + "Ground_Base.png", transform);
+
+		m_SceneCamera->SetPosition({0.0f, 50.0f, 0.0f});
+		m_SceneCamera->SetRotation({gen::ToRadians(180.0f),0.0f, 0.0f});
 
 		return true;
 	}
@@ -39,9 +50,6 @@ namespace Engine
 
 		windSize[0].width = 1600; windSize[0].height = 900; windSize[0].winString = std::to_string(windSize[0].width) + " x " + std::to_string(windSize[0].height);
 		windSize[1].width = 1920; windSize[1].height = 1080; windSize[1].winString = std::to_string(windSize[1].width) + " x " + std::to_string(windSize[1].height);
-
-		m_SceneCamera->SetPosition(CameraPosition);
-		m_SceneCamera->SetRotation(CameraRotation);
 
 		return true;
 	}
@@ -87,6 +95,8 @@ namespace Engine
 	void TerrainGenerationScene::UpdateScene(float frameTime)
 	{
 		m_EntityManager->UpdateAllEntities(frameTime);
+
+		m_SceneCamera->Control(frameTime);
 		// Control camera (will update its view matrix)
 		//MainCamera->Control(frameTime);
 		//GroundModel->SetScale(TerrainYScale);
@@ -360,6 +370,18 @@ namespace Engine
 					{
 						m_WindowProps.Height = windSize[n].height;
 						m_WindowProps.Width = windSize[n].width;
+
+						ParseApplicationSettings settings;
+						settings.SaveWindowSettings(m_WindowProps);
+					}
+					ImGui::EndMenu();
+				}
+				if (ImGui::BeginMenu("User Interface"))
+				{
+
+					if (ImGui::Button("Show ImGui demo"))
+					{
+						m_Showdemo = !m_Showdemo;
 					}
 					ImGui::EndMenu();
 				}
@@ -370,20 +392,32 @@ namespace Engine
 		}
 		ImGui::Begin("Stats");
 		ImGui::Text("Draw Calls: ");
-		ImGui::Text("quads: ");
+		ImGui::Text("quads: %s", m_EntityManager->GetEntity("ground")->GetName().c_str());
 		ImGui::Text("vertices: ");
 		ImGui::Text("indices: ");
 		ImGui::Text("Height: %i", m_WindowProps.Height);
 		ImGui::Text("Width: %i", m_WindowProps.Width);
+
+		ImGui::Text("Camera Position: (%.2f, %.2f, %.2f)", m_SceneCamera->Position().x, m_SceneCamera->Position().y, m_SceneCamera->Position().z);
+		ImGui::Text("Camera Rotation: (%.2f, %.2f, %.2f)", m_SceneCamera->Rotation().x, m_SceneCamera->Rotation().y, m_SceneCamera->Rotation().z);
+
+		TransformComponent* comp = static_cast<TransformComponent*>(m_EntityManager->GetEntity("ground")->GetComponent("Transform"));
+
+		ImGui::Text("Model Position: (%.2f, %.2f, %.2f)", comp->GetPosition().x, comp->GetPosition().y, comp->GetPosition().z);
+		ImGui::Text("Model Rotation: (%.2f, %.2f, %.2f)", comp->GetRotation().x, comp->GetRotation().y, comp->GetRotation().z);
+
 		ImGui::End();
 
-		ImGui::ShowDemoWindow();
+		if (m_Showdemo)
+		{
+			ImGui::ShowDemoWindow();
+		}
 
 		ImGui::Begin("Settings");
 		ImGui::End();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
-		ImGui::Begin("Viewport");
+		ImGui::Begin("Viewport",0, ImGuiWindowFlags_NoTitleBar);
 		auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
 		auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
 		auto viewportOffset = ImGui::GetWindowPos();
@@ -397,13 +431,6 @@ namespace Engine
 			Renderer* d11Renderer = static_cast<Renderer*>(m_Renderer);
 			ImGui::Image(d11Renderer->GetSceneShaderResourceView(), ImVec2{m_ViewportSize.x, m_ViewportSize.y}, ImVec2{0, 1}, ImVec2{1, 0});
 		}
-
-		//New ImGui window to contain the current scene rendered to a 2DTexture//
-		//{
-		//	ImGui::Begin("Scene", 0, windowFlags);
-		//	ImGui::Image(SceneTextureSRV, ImVec2((float)textureWidth, (float)textureHeight));
-		//	ImGui::End();
-		//}
 
 		//End the ImGui window
 		ImGui::End();

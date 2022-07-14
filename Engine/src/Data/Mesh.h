@@ -116,11 +116,9 @@ namespace Engine
 		//--------------------------------------------------------------------------------------
 		// Member data
 		//--------------------------------------------------------------------------------------
-	private:
-		std::vector<Node>    mNodes;     // The mesh hierarchy. First entry is root. remainder aree stored in depth-first order
-
 	protected:
 		std::vector<SubMesh> mSubMeshes; // The mesh geometry. Nodes refer to sub-meshes in this vector
+		std::vector<Node>    mNodes;
 
 		bool mHasBones;
 		Renderer* m_Renderer;

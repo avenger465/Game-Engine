@@ -11,21 +11,23 @@
 void Camera::Control(float frameTime)
 {
 	//**** ROTATION ****
+
+
 	if (KeyHeld(Key_Down))
 	{
-		mRotation.x += ROTATION_SPEED * frameTime; // Use of frameTime to ensure same speed on different machines
+		mRotation.x -= ROTATION_SPEED * frameTime; // Use of frameTime to ensure same speed on different machines
 	}
 	if (KeyHeld(Key_Up))
 	{
-		mRotation.x -= ROTATION_SPEED * frameTime;
+		mRotation.x += ROTATION_SPEED * frameTime;
 	}
 	if (KeyHeld(Key_Right))
 	{
-		mRotation.y += ROTATION_SPEED * frameTime;
+		mRotation.y -= ROTATION_SPEED * frameTime;
 	}
 	if (KeyHeld(Key_Left))
 	{
-		mRotation.y -= ROTATION_SPEED * frameTime;
+		mRotation.y += ROTATION_SPEED * frameTime;
 	}
 
 	//**** LOCAL MOVEMENT ****

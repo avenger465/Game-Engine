@@ -37,7 +37,7 @@ namespace Engine
 		HRESULT Run(IRenderer* renderer);	
 
 		void RenderScene(IRenderer* renderer);
-		void RenderSceneFromCamera(IRenderer* renderer);
+		void RenderSceneFromCamera(IRenderer* renderer, Camera* camera);
 
 	private:
 		HWND m_hWnd;

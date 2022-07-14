@@ -139,6 +139,8 @@ namespace Engine
 		//Seed for the Perlin Noise Algorithm
 		int seed = 0;
 
+		bool m_Showdemo = false;
+
 		//Variables that control the number of plants in the scene
 		int plantResizeAmount = 2;
 		int CurrentPlantVectorSize = 2;

@@ -30,6 +30,7 @@ namespace Engine
 			{
 				return (*it).second;
 			}
+			it++;
 		}
 		return nullptr;
 	}

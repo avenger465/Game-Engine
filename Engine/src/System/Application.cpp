@@ -11,7 +11,7 @@ namespace Engine
 
 		ParseApplicationSettings ApplicationSettings;
 
-		WindowProps = ApplicationSettings.ReadWindowSettings("data/WindowedSettings.xml");
+		WindowProps = ApplicationSettings.ReadWindowSettings("data/WindowSettings.xml");
 		//WindowProps = ApplicationSettings.ReadWindowSettings("data/FullscreenSettings.xml");
 
 		m_Renderer = NewRenderer(WindowProps.RenderType);

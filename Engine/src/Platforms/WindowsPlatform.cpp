@@ -38,7 +38,7 @@ namespace Engine
 		m_Window = S_OK;
 
 
-		E_CORE_INFO("Creating window {0} {1}, {2}", props.Title, props.Width, props.Height);
+		E_CORE_INFO("Creating window {0} [{1}, {2}]", props.Title, props.Width, props.Height);
 		m_Window = CreateApplicationWindow(props, renderer);
 
 		return TRUE;
@@ -101,16 +101,6 @@ namespace Engine
 		// the overall size of the window given our choice of viewport size.
 
 		RECT rc = { 0, 0, props.Width, props.Height };
-
-
-		//RECT desktop;
-		// Get a handle to the desktop window
-		//const HWND hDesktop = GetDesktopWindow();
-		// Get the size of screen to the variable desktop
-		//GetWindowRect(hDesktop, &desktop);
-		// The top left corner will have coordinates (0,0)
-		// and the bottom right corner will have coordinates
-		// (horizontal, vertical)
 
 
 		AdjustWindowRect(&rc, windowStyle, FALSE);
@@ -195,14 +185,6 @@ namespace Engine
 			else // When no windows messages left to process then render & update our scene
 			{
 				// Update the scene by the amount of time since the last frame
-				/*float frameTime = 0;
-
-				while (frameTime < 1 / 60.0f)
-				{
-					frameTime += m_Timer.GetLapTime();
-				}
-				frameTime = 1 / 60.0f;
-				m_SceneManager->SceneLoop(frameTime);*/
 
 				// Update the scene by the amount of time since the last frame
 				float frameTime = m_Timer.GetLapTime();
@@ -210,7 +192,8 @@ namespace Engine
 
 				RenderScene(renderer);
 				//// Render the scene
-				//Scene->RenderScene(frameTime);
+
+				Scene->UpdateScene(frameTime);
 
 
 				if (KeyHit(Key_Escape))
@@ -335,7 +318,7 @@ namespace Engine
 			// Sets the correct scene settings
 			currentRenderer->PerFrameConstants.ambientColour = CVector3{0.5, 0.5, 0.5};// m_Scenes[m_SceneIndex]->GetAmbientColour();
 			currentRenderer->PerFrameConstants.specularPower = 0.3f; //m_Scenes[m_SceneIndex]->GetSpecularPower();
-			//currentRenderer->PerFrameConstants.cameraPosition = m_Scenes[m_SceneIndex]->GetCamera()->Position();
+			currentRenderer->PerFrameConstants.cameraPosition = Scene->GetCamera()->Position();
 
 			//// Main scene rendering ////
 
@@ -345,7 +328,7 @@ namespace Engine
 			ID3D11RenderTargetView* SceneBuffer = currentRenderer->GetSceneRenderTarget();
 
 			// Clear the back buffer to a fixed colour and the depth buffer to the far distance
-			ColourRGBA backgroundColour = ColourRGBA{1.0f, 0.5f, 0.5f};// m_Scenes[m_SceneIndex]->GetBackgroundColour();
+			ColourRGBA backgroundColour = Scene->GetBackgroundColour();// m_Scenes[m_SceneIndex]->GetBackgroundColour();
 			currentRenderer->GetDeviceContext()->OMSetRenderTargets(1, &SceneBuffer, currentRenderer->GetSceneDepthStencil());
 
 			// Clear the back buffer to a fixed colour and the depth buffer to the far distance
@@ -363,7 +346,7 @@ namespace Engine
 			currentRenderer->GetDeviceContext()->RSSetViewports(1, &vp);
 
 			// Render the scene from the main camera
-			RenderSceneFromCamera(renderer);
+			RenderSceneFromCamera(renderer, Scene->GetCamera());
 
 			ImGui::Render();
 			currentRenderer->GetDeviceContext()->OMSetRenderTargets(1, &backBuffer, nullptr);
@@ -386,16 +369,16 @@ namespace Engine
 		}
 	}
 
-	void Window::RenderSceneFromCamera(IRenderer* renderer)
+	void Window::RenderSceneFromCamera(IRenderer* renderer, Camera* camera)
 	{
 
 		Renderer* currentRenderer = static_cast<Renderer*>(renderer);
 		if (currentRenderer->GetRenderingType() == ERenderingAPI::DirectX11)
 		{
 			// Set camera matrices in the constant buffer and send over to GPU
-			//currentRenderer->PerFrameConstants.viewMatrix = m_Scenes[m_SceneIndex]->GetCamera()->ViewMatrix();
-			//currentRenderer->PerFrameConstants.projectionMatrix = m_Scenes[m_SceneIndex]->GetCamera()->ProjectionMatrix();
-			//currentRenderer->PerFrameConstants.viewProjectionMatrix = m_Scenes[m_SceneIndex]->GetCamera()->ViewProjectionMatrix();
+			currentRenderer->PerFrameConstants.viewMatrix =			  camera->ViewMatrix();
+			currentRenderer->PerFrameConstants.projectionMatrix =	  camera->ProjectionMatrix();
+			currentRenderer->PerFrameConstants.viewProjectionMatrix = camera->ViewProjectionMatrix();
 			UpdateConstantBuffer(currentRenderer->GetDeviceContext(), currentRenderer->PerFrameConstantBuffer, currentRenderer->PerFrameConstants);
 
 			// Indicate that the constant buffer we just updated is for use in the vertex shader (VS) and pixel shader (PS)

@@ -699,37 +699,32 @@ namespace Engine
 		return count;
 	}
 
+	// Help build the arrays of submeshes and nodes from the assimp data - recursive
 	unsigned int Mesh::ReadNodes(aiNode* assimpNode, unsigned int nodeIndex, unsigned int parentIndex)
 	{
-		return 0;
+		auto& node = mNodes[nodeIndex];
+		node.parentIndex = parentIndex;
+		unsigned int thisIndex = nodeIndex;
+		++nodeIndex;
+
+		node.name = assimpNode->mName.C_Str();
+
+		node.defaultMatrix.SetValues(&assimpNode->mTransformation.a1);
+		node.defaultMatrix.Transpose(); // Assimp stores matrices differently to this app
+
+		node.subMeshes.resize(assimpNode->mNumMeshes);
+		for (unsigned int i = 0; i < assimpNode->mNumMeshes; ++i)
+		{
+			node.subMeshes[i] = assimpNode->mMeshes[i];
+		}
+
+		node.childNodes.resize(assimpNode->mNumChildren);
+		for (unsigned int i = 0; i < assimpNode->mNumChildren; ++i)
+		{
+			node.childNodes[i] = nodeIndex;
+			nodeIndex = ReadNodes(assimpNode->mChildren[i], nodeIndex, thisIndex);
+		}
+
+		return nodeIndex;
 	}
-
-	// Help build the arrays of submeshes and nodes from the assimp data - recursive
-	//unsigned int Mesh::ReadNodes(aiNode* assimpNode, unsigned int nodeIndex, unsigned int parentIndex)
-	//{
-	//	auto& node = mNodes[nodeIndex];
-	//	node.parentIndex = parentIndex;
-	//	unsigned int thisIndex = nodeIndex;
-	//	++nodeIndex;
-
-	//	node.name = assimpNode->mName.C_Str();
-
-	//	node.defaultMatrix.SetValues(&assimpNode->mTransformation.a1);
-	//	node.defaultMatrix.Transpose(); // Assimp stores matrices differently to this app
-
-	//	node.subMeshes.resize(assimpNode->mNumMeshes);
-	//	for (unsigned int i = 0; i < assimpNode->mNumMeshes; ++i)
-	//	{
-	//		node.subMeshes[i] = assimpNode->mMeshes[i];
-	//	}
-
-	//	node.childNodes.resize(assimpNode->mNumChildren);
-	//	for (unsigned int i = 0; i < assimpNode->mNumChildren; ++i)
-	//	{
-	//		node.childNodes[i] = nodeIndex;
-	//		nodeIndex = ReadNodes(assimpNode->mChildren[i], nodeIndex, thisIndex);
-	//	}
-
-	//	return nodeIndex;
-	//}
 }
