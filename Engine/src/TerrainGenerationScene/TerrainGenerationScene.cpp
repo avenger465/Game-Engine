@@ -37,6 +37,9 @@ namespace Engine
 		windowFlags |= ImGuiWindowFlags_NoScrollbar;
 		windowFlags |= ImGuiWindowFlags_AlwaysAutoResize;
 
+		windSize[0].width = 1600; windSize[0].height = 900; windSize[0].winString = std::to_string(windSize[0].width) + " x " + std::to_string(windSize[0].height);
+		windSize[1].width = 1920; windSize[1].height = 1080; windSize[1].winString = std::to_string(windSize[1].width) + " x " + std::to_string(windSize[1].height);
+
 		m_SceneCamera->SetPosition(CameraPosition);
 		m_SceneCamera->SetRotation(CameraRotation);
 
@@ -108,6 +111,29 @@ namespace Engine
 			for (int j = 0; j <= SizeOfTerrain; ++j) {
 				HeightMap[i][j] /= normaliseAmount;
 			}
+		}
+	}
+
+	void TerrainGenerationScene::SettingsMenu()
+	{
+		ImGuiWindowFlags SettingsWinFlags = 0;
+		SettingsWinFlags = /*ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse |*/ ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoNav;
+		ImGui::Begin("SettingsMenu", nullptr, SettingsWinFlags);
+
+		ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
+		if (ImGui::BeginTabBar("MyTabBar", tab_bar_flags))
+		{
+			if (ImGui::BeginTabItem("Window"))
+			{
+				ImGui::Text("Hello");
+				ImGui::EndTabItem();
+			}
+			//if (ImGui::BeginTabItem("Camera"))
+			//{
+			//	
+			//	ImGui::EndTabItem();
+			//}
+			ImGui::EndTabBar();
 		}
 	}
 
@@ -251,6 +277,7 @@ namespace Engine
 		static bool dockspaceOpen = true;
 		static bool opt_fullscreen = true;
 		static bool opt_padding = false;
+		static int n = 0;
 		static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
 
 		// We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
@@ -324,6 +351,21 @@ namespace Engine
 
 				ImGui::EndMenu();
 			}
+			if (ImGui::BeginMenu("Options"))
+			{
+				if (ImGui::BeginMenu("Graphics"))
+				{
+					ImGui::Combo("Resolution", &n, " 1600 x 900\0 1920 x 1080\0\0");
+					if (ImGui::Button("Apply"))
+					{
+						m_WindowProps.Height = windSize[n].height;
+						m_WindowProps.Width = windSize[n].width;
+					}
+					ImGui::EndMenu();
+				}
+
+				ImGui::EndMenu();
+			}
 			ImGui::EndMenuBar();
 		}
 		ImGui::Begin("Stats");
@@ -331,7 +373,11 @@ namespace Engine
 		ImGui::Text("quads: ");
 		ImGui::Text("vertices: ");
 		ImGui::Text("indices: ");
+		ImGui::Text("Height: %i", m_WindowProps.Height);
+		ImGui::Text("Width: %i", m_WindowProps.Width);
 		ImGui::End();
+
+		ImGui::ShowDemoWindow();
 
 		ImGui::Begin("Settings");
 		ImGui::End();

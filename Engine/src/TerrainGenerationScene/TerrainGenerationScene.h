@@ -106,6 +106,8 @@ namespace Engine
 		//Function to update the position of every plant in the scene
 		void UpdateFoliagePosition();
 
+		void SettingsMenu();
+
 		//-------------//
 		// Member data //
 		//-------------//
@@ -166,6 +168,19 @@ namespace Engine
 
 
 	private:
+
+		struct SWinSize
+		{
+			int width;
+			int height;
+			std::string winString;
+		};
+
+		SWinSize windSize[2];
+		const char* window[2];
+		const char* windowPreviewValue;
+		int currentWindowIndex = 0;
+
 		IRenderer* m_Renderer;
 		EntityManager* m_EntityManager = nullptr;
 		WindowProperties m_WindowProps;
