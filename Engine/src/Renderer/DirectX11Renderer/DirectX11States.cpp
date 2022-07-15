@@ -11,6 +11,7 @@ namespace Engine
 
 	bool DirectX11States::InitStates(IRenderer* renderer)
 	{
+		ENGINE_CORE_INFO("Initialising States: ");
 		Renderer* dx11Renderer = static_cast<Renderer*>(renderer);
 
 		D3D11_SAMPLER_DESC samplerDesc = {};
@@ -27,7 +28,7 @@ namespace Engine
 		// Then create a DirectX object for your description that can be used by a shader
 		if (FAILED(dx11Renderer->GetDevice()->CreateSamplerState(&samplerDesc, &m_PointSampler)))
 		{
-			//LastError = "Error creating point sampler";
+			ENGINE_CORE_ERROR("Error creating Point-Sampler ");
 			return false;
 		}
 
@@ -44,7 +45,7 @@ namespace Engine
 		// Then create a DirectX object for your description that can be used by a shader
 		if (FAILED(dx11Renderer->GetDevice()->CreateSamplerState(&samplerDesc, &m_TrilinearSampler)))
 		{
-			//LastError = "Error creating Trilinear sampler";
+			ENGINE_CORE_ERROR("Error creating Trilinear-Sampler ");
 			return false;
 		}
 
@@ -61,7 +62,7 @@ namespace Engine
 		// Then create a DirectX object for your description that can be used by a shader
 		if (FAILED(dx11Renderer->GetDevice()->CreateSamplerState(&samplerDesc, &m_Anisotropic4xSampler)))
 		{
-			//LastError = "Error creating anisotropic 4x sampler";
+			ENGINE_CORE_ERROR("Error creating Anisotropic4x-Sampler ");
 			return false;
 		}
 
@@ -78,7 +79,7 @@ namespace Engine
 		// Then create a DirectX object for your description that can be used by a shader
 		if (FAILED(dx11Renderer->GetDevice()->CreateSamplerState(&samplerDesc, &m_BilinearMirrorSampler)))
 		{
-			//LastError = "Error creating bilinear mirror sampler";
+			ENGINE_CORE_ERROR("Error creating BiLinear-Mirror-Sampler ");
 			return false;
 		}
 
@@ -101,7 +102,7 @@ namespace Engine
 		// Create a DirectX object for the description above that can be used by a shader
 		if (FAILED(dx11Renderer->GetDevice()->CreateRasterizerState(&rasterizerDesc, &m_CullBackState)))
 		{
-			//LastError = "Error creating cull-back state";
+			ENGINE_CORE_ERROR("Error creating Cull-Back-State ");
 		}
 
 		////-------- Front face culling --------////
@@ -113,7 +114,7 @@ namespace Engine
 		// Create a DirectX object for the description above that can be used by a shader
 		if (FAILED(dx11Renderer->GetDevice()->CreateRasterizerState(&rasterizerDesc, &m_CullFrontState)))
 		{
-			//LastError = "Error creating cull-front state";
+			ENGINE_CORE_ERROR("Error creating Cull-Front-State ");
 			return false;
 		}
 
@@ -127,7 +128,7 @@ namespace Engine
 		// Create a DirectX object for the description above that can be used by a shader
 		if (FAILED(dx11Renderer->GetDevice()->CreateRasterizerState(&rasterizerDesc, &m_CullNoneState)))
 		{
-			//LastError = "Error creating cull-none state";
+			ENGINE_CORE_ERROR("Error creating Cull-None-State ");
 			return false;
 		}
 
@@ -139,7 +140,7 @@ namespace Engine
 		// Create a DirectX object for the description above that can be used by a shader
 		if (FAILED(dx11Renderer->GetDevice()->CreateRasterizerState(&rasterizerDesc, &m_WireframeState)))
 		{
-			//LastError = "Error creating WireFrame state";
+			ENGINE_CORE_ERROR("Error creating Wireframe-State ");
 			return false;
 		}
 
@@ -165,7 +166,7 @@ namespace Engine
 		// Then create a DirectX object for the description that can be used by a shader
 		if (FAILED(dx11Renderer->GetDevice()->CreateBlendState(&blendDesc, &m_NoBlendingState)))
 		{
-			//LastError = "Error creating no-blend state";
+			ENGINE_CORE_ERROR("Error creating No-Blending_State ");
 			return false;
 		}
 
@@ -186,7 +187,7 @@ namespace Engine
 		// Then create a DirectX object for the description that can be used by a shader
 		if (FAILED(dx11Renderer->GetDevice()->CreateBlendState(&blendDesc, &m_AdditiveBlendingState)))
 		{
-			//LastError = "Error creating additive blending state";
+			ENGINE_CORE_ERROR("Error creating Additive-Blending-State");
 			return false;
 		}
 
@@ -206,7 +207,7 @@ namespace Engine
 		// Then create a DirectX object for the description that can be used by a shader
 		if (FAILED(dx11Renderer->GetDevice()->CreateBlendState(&blendDesc, &m_AlphaBlendingState)))
 		{
-			//LastError = "Error creating alpha blending state";
+			ENGINE_CORE_ERROR("Error creating Alpha-Blending-State ");
 			return false;
 		}
 
@@ -228,7 +229,7 @@ namespace Engine
 		// Create a DirectX object for the description above that can be used by a shader
 		if (FAILED(dx11Renderer->GetDevice()->CreateDepthStencilState(&depthStencilDesc, &m_UseDepthBufferState)))
 		{
-			//LastError = "Error creating use-depth-buffer state";
+			ENGINE_CORE_ERROR("Error creating Use-Depth-Buffer-State ");
 			return false;
 		}
 
@@ -243,7 +244,7 @@ namespace Engine
 		// Create a DirectX object for the description above that can be used by a shader
 		if (FAILED(dx11Renderer->GetDevice()->CreateDepthStencilState(&depthStencilDesc, &m_DepthReadOnlyState)))
 		{
-			//LastError = "Error creating depth-read-only state";
+			ENGINE_CORE_ERROR("Error creating Depth-Read_Only-State ");
 			return false;
 		}
 
@@ -257,7 +258,7 @@ namespace Engine
 		// Create a DirectX object for the description above that can be used by a shader
 		if (FAILED(dx11Renderer->GetDevice()->CreateDepthStencilState(&depthStencilDesc, &m_NoDepthBufferState)))
 		{
-			//LastError = "Error creating no-depth-buffer state";
+			ENGINE_CORE_ERROR("Error creating No-Depth-Buffer-State");
 			return false;
 		}
 

@@ -246,11 +246,11 @@ namespace Engine
 
 		pAdapter->GetDesc(&desc);
 		m_videoCardMemory = (int)(desc.DedicatedVideoMemory / 1024 / 1024);
-		E_CORE_INFO("{0} MB", m_videoCardMemory);
+		ENGINE_CORE_INFO("{0} MB", m_videoCardMemory);
 
 		size_t stringLength = 0;
 		wcstombs_s(&stringLength, m_videoCardDescription, 128, desc.Description, 128);
-		E_CORE_INFO("{0}", m_videoCardDescription);
+		ENGINE_CORE_INFO("{0}", m_videoCardDescription);
 
 		SAFE_RELEASE(pAdapter);
 		SAFE_RELEASE(factory);

@@ -78,9 +78,6 @@
     <ClInclude Include="src\Data\ParseApplicationSettings.h">
       <Filter>src\Data</Filter>
     </ClInclude>
-    <ClInclude Include="src\Data\State.h">
-      <Filter>src\Data</Filter>
-    </ClInclude>
     <ClInclude Include="src\Data\tinyxml2.h">
       <Filter>src\Data</Filter>
     </ClInclude>
@@ -204,9 +201,6 @@
       <Filter>src\Data</Filter>
     </ClCompile>
     <ClCompile Include="src\Data\ParseApplicationSettings.cpp">
-      <Filter>src\Data</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Data\State.cpp">
       <Filter>src\Data</Filter>
     </ClCompile>
     <ClCompile Include="src\Data\tinyxml2.cpp">

@@ -4,6 +4,8 @@
 
 #define	SAFE_RELEASE(x)	if(x){ x->Release(); x = NULL;	}
 
+#define NULL_CHECK(val)  if (val == nullptr);
+
 namespace Engine
 {
 	template<typename T>

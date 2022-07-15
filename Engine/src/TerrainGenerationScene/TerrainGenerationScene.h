@@ -108,6 +108,8 @@ namespace Engine
 
 		void SettingsMenu();
 
+		EntityTransform transform = EntityTransform();
+
 		//-------------//
 		// Member data //
 		//-------------//

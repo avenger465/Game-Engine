@@ -23,7 +23,8 @@ project "Editor"
 	links
 	{
 		"Engine",
-		"winmm.lib"
+		"winmm.lib",
+		"xinput.lib"
 	}
 
 	filter "system:windows"

@@ -38,7 +38,7 @@ namespace Engine
 		m_Window = S_OK;
 
 
-		E_CORE_INFO("Creating window {0} [{1}, {2}]", props.Title, props.Width, props.Height);
+		ENGINE_CORE_INFO("Creating window {0} [{1}, {2}]", props.Title, props.Width, props.Height);
 		m_Window = CreateApplicationWindow(props, renderer);
 
 		return TRUE;
@@ -194,12 +194,6 @@ namespace Engine
 				//// Render the scene
 
 				Scene->UpdateScene(frameTime);
-
-
-				if (KeyHit(Key_Escape))
-				{
-					DestroyWindow(m_hWnd); // This will close the window and ultimately exit this loop
-				}
 
 			}
 		}

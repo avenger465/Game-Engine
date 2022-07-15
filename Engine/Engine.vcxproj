@@ -89,7 +89,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>d3d11.lib;assimp-vc140-mt.lib;DirectXTK.lib;DirectXTex.lib;d3dcompiler.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;assimp-vc140-mt.lib;DirectXTK.lib;DirectXTex.lib;d3dcompiler.lib;winmm.lib;xinput.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>vendor\assimp\lib\xSixtyFour;vendor\DirectXTK\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
@@ -114,7 +114,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>d3d11.lib;assimp-vc140-mt.lib;DirectXTK.lib;DirectXTex.lib;d3dcompiler.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;assimp-vc140-mt.lib;DirectXTK.lib;DirectXTex.lib;d3dcompiler.lib;winmm.lib;xinput.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>vendor\assimp\lib\xSixtyFour;vendor\DirectXTK\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
@@ -134,7 +134,7 @@
       <SubSystem>Windows</SubSystem>
     </Link>
     <Lib>
-      <AdditionalDependencies>d3d11.lib;assimp-vc140-mt.lib;DirectXTK.lib;DirectXTex.lib;d3dcompiler.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;assimp-vc140-mt.lib;DirectXTK.lib;DirectXTex.lib;d3dcompiler.lib;winmm.lib;xinput.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>vendor\assimp\lib\xSixtyFour;vendor\DirectXTK\Dist;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
@@ -145,7 +145,6 @@
     <ClInclude Include="src\Data\Mesh.h" />
     <ClInclude Include="src\Data\Model.h" />
     <ClInclude Include="src\Data\ParseApplicationSettings.h" />
-    <ClInclude Include="src\Data\State.h" />
     <ClInclude Include="src\Data\tinyxml2.h" />
     <ClInclude Include="src\ECS\BaseComponent.h" />
     <ClInclude Include="src\ECS\Components\LightComponent.h" />
@@ -189,7 +188,6 @@
     <ClCompile Include="src\Data\Mesh.cpp" />
     <ClCompile Include="src\Data\Model.cpp" />
     <ClCompile Include="src\Data\ParseApplicationSettings.cpp" />
-    <ClCompile Include="src\Data\State.cpp" />
     <ClCompile Include="src\Data\tinyxml2.cpp" />
     <ClCompile Include="src\ECS\Components\LightComponent.cpp" />
     <ClCompile Include="src\ECS\Components\MeshComponent.cpp" />

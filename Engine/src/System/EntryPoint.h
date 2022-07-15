@@ -13,5 +13,5 @@ int main(int argc, char** argv)
 	app->run();
 	delete app;
 
-	E_CORE_INFO("Closing down Engine");
+	ENGINE_CORE_INFO("Closing down Engine");
 }

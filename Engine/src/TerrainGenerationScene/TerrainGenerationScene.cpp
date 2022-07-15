@@ -28,7 +28,6 @@ namespace Engine
 
 		m_EntityManager = new EntityManager(m_Renderer);
 
-		EntityTransform transform = EntityTransform();
 		transform.Scale = { 2.0f, 0.0f, 2.0f };
 		//transform.Rotation = {gen::ToRadians(180.0f), 0.0f, 0.0f};
 
@@ -359,6 +358,9 @@ namespace Engine
 					std::cout << "Save as";
 					//SaveSceneAs();
 
+				if (ImGui::MenuItem("Exit"))
+					DestroyWindow(m_Renderer->GetWindowProperties().Hwnd);
+
 				ImGui::EndMenu();
 			}
 			if (ImGui::BeginMenu("Options"))
@@ -395,8 +397,8 @@ namespace Engine
 		ImGui::Text("quads: %s", m_EntityManager->GetEntity("ground")->GetName().c_str());
 		ImGui::Text("vertices: ");
 		ImGui::Text("indices: ");
-		ImGui::Text("Height: %i", m_WindowProps.Height);
-		ImGui::Text("Width: %i", m_WindowProps.Width);
+
+		ImGui::Text("Number of Entities in the Scene: %i", m_EntityManager->NumEntities());
 
 		ImGui::Text("Camera Position: (%.2f, %.2f, %.2f)", m_SceneCamera->Position().x, m_SceneCamera->Position().y, m_SceneCamera->Position().z);
 		ImGui::Text("Camera Rotation: (%.2f, %.2f, %.2f)", m_SceneCamera->Rotation().x, m_SceneCamera->Rotation().y, m_SceneCamera->Rotation().z);
@@ -405,6 +407,20 @@ namespace Engine
 
 		ImGui::Text("Model Position: (%.2f, %.2f, %.2f)", comp->GetPosition().x, comp->GetPosition().y, comp->GetPosition().z);
 		ImGui::Text("Model Rotation: (%.2f, %.2f, %.2f)", comp->GetRotation().x, comp->GetRotation().y, comp->GetRotation().z);
+
+		std::string path = "media/";
+
+		ImGui::SliderFloat3("Position", &transform.Position.x,-100.0f, 100.0f);
+		ImGui::SliderFloat3("Scale", &transform.Scale.x,0, 100.0f);
+
+		if (ImGui::Button("Create Entity"))
+		{
+			m_EntityManager->CreateModelEntity("Cube", path + "Teapot.x", true, path + "Rock.png", transform);
+		}
+		if (ImGui::Button("Create Light"))
+		{
+			m_EntityManager->CreateLightEntity("Light");
+		}
 
 		ImGui::End();
 

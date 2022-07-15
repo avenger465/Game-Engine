@@ -50,7 +50,8 @@ project "Engine"
 		"DirectXTK.lib",
 		"DirectXTex.lib",
 		"d3dcompiler.lib",
-		"winmm.lib"
+		"winmm.lib",
+		"xinput.lib"
 	}
 
 	files("vendor/imgui/backends/imgui_impl_win32.cpp")
