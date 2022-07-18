@@ -67,6 +67,7 @@ namespace Engine
 
 	private:
 		void GetHardwareInfo();
+		std::string GetCpuInfo();
 
 	public:
 		PerFrameConstants PerFrameConstants; // Used for setting per frame constant variables and sending them to the GPU
