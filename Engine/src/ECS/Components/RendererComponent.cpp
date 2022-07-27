@@ -33,7 +33,7 @@ namespace Engine
 
 		if (m_isRendered && m_Model != nullptr && m_Renderer->GetRenderingType() == ERenderingAPI::DirectX11)
 		{
-			Renderer* dx11Renderer = static_cast<Renderer*>(m_Renderer);
+			DirectX11Renderer* dx11Renderer = static_cast<DirectX11Renderer*>(m_Renderer);
 
 			dx11Renderer->GetDeviceContext()->VSSetShader(m_VertexShader, nullptr, 0);
 			dx11Renderer->GetDeviceContext()->PSSetShader(m_PixelShader, nullptr, 0);
@@ -56,7 +56,7 @@ namespace Engine
 	{
 		if (m_Renderer->GetRenderingType() == ERenderingAPI::DirectX11)
 		{
-			Renderer* dx11Renderer = static_cast<Renderer*>(m_Renderer);
+			DirectX11Renderer* dx11Renderer = static_cast<DirectX11Renderer*>(m_Renderer);
 			if (!LoadTexture(dx11Renderer, texturePath, &m_TextureResource, &m_TextureSRV))
 			{
 				int i = 0;

@@ -5,38 +5,7 @@
       <FullPath>C:\Users\Games\Documents\GitHub\Game-Engine\bin\Debug-windows-x86_64\Editor\Editor.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
-  <ContentFiles>
-    <ContentFile>
-      <FullPath>C:\Users\Games\Documents\GitHub\Game-Engine\Engine\Src\Shaders\BasicTransform_vs.cso</FullPath>
-    </ContentFile>
-    <ContentFile>
-      <FullPath>C:\Users\Games\Documents\GitHub\Game-Engine\Engine\Src\Shaders\LightModel_ps.cso</FullPath>
-    </ContentFile>
-    <ContentFile>
-      <FullPath>C:\Users\Games\Documents\GitHub\Game-Engine\Engine\Src\Shaders\NormalMapping_ps.cso</FullPath>
-    </ContentFile>
-    <ContentFile>
-      <FullPath>C:\Users\Games\Documents\GitHub\Game-Engine\Engine\Src\Shaders\NormalMapping_vs.cso</FullPath>
-    </ContentFile>
-    <ContentFile>
-      <FullPath>C:\Users\Games\Documents\GitHub\Game-Engine\Engine\Src\Shaders\PixelLightingWithAlpha_ps.cso</FullPath>
-    </ContentFile>
-    <ContentFile>
-      <FullPath>C:\Users\Games\Documents\GitHub\Game-Engine\Engine\Src\Shaders\PixelLighting_ps.cso</FullPath>
-    </ContentFile>
-    <ContentFile>
-      <FullPath>C:\Users\Games\Documents\GitHub\Game-Engine\Engine\Src\Shaders\PixelLighting_vs.cso</FullPath>
-    </ContentFile>
-    <ContentFile>
-      <FullPath>C:\Users\Games\Documents\GitHub\Game-Engine\Engine\Src\Shaders\TerrainShader_ps.cso</FullPath>
-    </ContentFile>
-    <ContentFile>
-      <FullPath>C:\Users\Games\Documents\GitHub\Game-Engine\Engine\Src\Shaders\Triangle_Normals_gs.cso</FullPath>
-    </ContentFile>
-    <ContentFile>
-      <FullPath>C:\Users\Games\Documents\GitHub\Game-Engine\Engine\Src\Shaders\WorldTransformOnly_vs.cso</FullPath>
-    </ContentFile>
-  </ContentFiles>
+  <ContentFiles />
   <SatelliteDlls />
   <NonRecipeFileRefs />
 </Project>

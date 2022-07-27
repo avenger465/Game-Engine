@@ -8,7 +8,7 @@
 
 #include "../Math/CMatrix4x4.h"
 #include "Common/Common.h"
-#include "Renderer\DirectX11Renderer\Renderer.h"
+#include "Renderer\DirectX11Renderer\DirectX11Renderer.h"
 
 
 
@@ -38,7 +38,7 @@ void UpdateConstantBuffer(ID3D11DeviceContext* deviceContext, ID3D11Buffer* buff
 // This function requires you to pass a ID3D11Resource* (e.g. &gTilesDiffuseMap), which manages the GPU memory for the
 // texture and also a ID3D11ShaderResourceView* (e.g. &gTilesDiffuseMapSRV), which allows us to use the texture in shaders
 // The function will fill in these pointers with usable data. Returns false on failure
-bool LoadTexture(Engine::Renderer* renderer, std::string filename, ID3D11Resource** texture, ID3D11ShaderResourceView** textureSRV);
+bool LoadTexture(Engine::DirectX11Renderer* renderer, std::string filename, ID3D11Resource** texture, ID3D11ShaderResourceView** textureSRV);
 
 
 

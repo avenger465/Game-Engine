@@ -12,6 +12,8 @@ namespace Engine
 
 		virtual const ERenderingAPI GetRenderingType() = 0;
 
+		virtual const std::string GetRenderingTypeString() = 0;
+
 		virtual WindowProperties GetWindowProperties() = 0;
 	};
 

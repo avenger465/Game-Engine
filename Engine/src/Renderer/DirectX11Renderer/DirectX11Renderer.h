@@ -35,17 +35,19 @@ struct PerModelConstants
 
 namespace Engine
 {
-	class Renderer : public IRenderer
+	class DirectX11Renderer : public IRenderer
 	{
 	public:
 
-		~Renderer();
+		~DirectX11Renderer();
 		
 		virtual bool InitRenderer(WindowProperties& WindowProps) override;
 
 		virtual void ShutdownRenderer() override;
 
 		virtual const ERenderingAPI GetRenderingType() override {return ERenderingAPI::DirectX11;}
+
+		virtual const std::string GetRenderingTypeString() override;
 		
 		virtual WindowProperties GetWindowProperties() override { return m_WindowProps; }
 

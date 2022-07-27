@@ -63,7 +63,7 @@ namespace Engine
 
 		if (m_Renderer->GetRenderingType() == ERenderingAPI::DirectX11)
 		{
-			Renderer* d11Renderer = static_cast<Renderer*>(m_Renderer);
+			DirectX11Renderer* d11Renderer = static_cast<DirectX11Renderer*>(m_Renderer);
 
 			// Set camera matrices in the constant buffer and send over to GPU
 			d11Renderer->PerFrameConstants.viewMatrix = m_SceneCamera->ViewMatrix();
@@ -444,7 +444,7 @@ namespace Engine
 
 		if (m_Renderer->GetRenderingType() == ERenderingAPI::DirectX11)
 		{
-			Renderer* d11Renderer = static_cast<Renderer*>(m_Renderer);
+			DirectX11Renderer* d11Renderer = static_cast<DirectX11Renderer*>(m_Renderer);
 			ImGui::Image(d11Renderer->GetSceneShaderResourceView(), ImVec2{m_ViewportSize.x, m_ViewportSize.y}, ImVec2{0, 1}, ImVec2{1, 0});
 		}
 

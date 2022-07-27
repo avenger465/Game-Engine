@@ -1,17 +1,17 @@
 #include "epch.h"
 
-#include "Renderer.h"
+#include "DirectX11Renderer.h"
 #pragma comment(lib, "dxgi.lib")
 
 
 namespace Engine
 {
-	Renderer::~Renderer()
+	DirectX11Renderer::~DirectX11Renderer()
 	{
 		ShutdownRenderer();
 	}
 
-	bool Renderer::InitRenderer(WindowProperties& WindowProps)
+	bool DirectX11Renderer::InitRenderer(WindowProperties& WindowProps)
 	{
 		// Many DirectX functions return a "HRESULT" variable to indicate success or failure. Microsoft code often uses
 		// the FAILED macro to test this variable, you'll see it throughout the code - it's fairly self explanatory.
@@ -198,7 +198,7 @@ namespace Engine
 	}
 
 
-	void Renderer::ShutdownRenderer()
+	void DirectX11Renderer::ShutdownRenderer()
 	{
 		if (m_D3DContext)
 		{
@@ -214,7 +214,12 @@ namespace Engine
 		if (PerModelConstantBuffer)   PerModelConstantBuffer->Release();
 	}
 
-	ID3D11Buffer* Renderer::CreateConstantBuffer(int size)
+	const std::string DirectX11Renderer::GetRenderingTypeString()
+	{
+		return "DirectX11";
+	}
+
+	ID3D11Buffer* DirectX11Renderer::CreateConstantBuffer(int size)
 	{
 		D3D11_BUFFER_DESC cbDesc;
 		cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
@@ -231,11 +236,11 @@ namespace Engine
 
 		return constantBuffer;
 	}
-	bool Renderer::LoadTextureFromFile(const char* filename, ID3D11ShaderResourceView** out_srv, int* out_width, int* out_height)
+	bool DirectX11Renderer::LoadTextureFromFile(const char* filename, ID3D11ShaderResourceView** out_srv, int* out_width, int* out_height)
 	{
 		return false;
 	}
-	void Renderer::GetHardwareInfo()
+	void DirectX11Renderer::GetHardwareInfo()
 	{
 		IDXGIFactory* factory = nullptr;
 		HRESULT result = CreateDXGIFactory1(__uuidof(IDXGIFactory), (void**)&factory);
@@ -257,7 +262,7 @@ namespace Engine
 		SAFE_RELEASE(factory);
 	}
 
-	std::string Renderer::GetCpuInfo()
+	std::string DirectX11Renderer::GetCpuInfo()
 	{
 		// 4 is essentially hardcoded due to the __cpuid function requirements.
 		// NOTE: Results are limited to whatever the sizeof(int) * 4 is...

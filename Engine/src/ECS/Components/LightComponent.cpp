@@ -33,7 +33,7 @@ namespace Engine
 	{
 		if (m_Model != nullptr && m_Renderer->GetRenderingType() == ERenderingAPI::DirectX11)
 		{
-			Renderer* dx11Renderer = static_cast<Renderer*>(m_Renderer);
+			DirectX11Renderer* dx11Renderer = static_cast<DirectX11Renderer*>(m_Renderer);
 
 			dx11Renderer->GetDeviceContext()->VSSetShader(m_VertexShader, nullptr, 0);
 			dx11Renderer->GetDeviceContext()->PSSetShader(m_PixelShader, nullptr, 0);

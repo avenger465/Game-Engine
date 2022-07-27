@@ -37,6 +37,9 @@
     <Filter Include="src\Renderer\DirectX11Renderer">
       <UniqueIdentifier>{6EAA87FE-5AD0-5165-4316-D7302FDB7631}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Renderer\OpenGLRenderer">
+      <UniqueIdentifier>{BED6BA1F-2AE4-E805-B3CA-E4F01FD7B4BC}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\System">
       <UniqueIdentifier>{A1A9A82F-8D61-EA7C-F668-C3D8E23F856D}</UniqueIdentifier>
     </Filter>
@@ -123,8 +126,14 @@
     <ClInclude Include="src\Math\MathHelpers.h">
       <Filter>src\Math</Filter>
     </ClInclude>
+    <ClInclude Include="src\Platforms\OpenGLPlatform.h">
+      <Filter>src\Platforms</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platforms\WindowsPlatform.h">
       <Filter>src\Platforms</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\DirectX11Renderer\DirectX11Renderer.h">
+      <Filter>src\Renderer\DirectX11Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Renderer\DirectX11Renderer\DirectX11Shaders.h">
       <Filter>src\Renderer\DirectX11Renderer</Filter>
@@ -132,8 +141,8 @@
     <ClInclude Include="src\Renderer\DirectX11Renderer\DirectX11States.h">
       <Filter>src\Renderer\DirectX11Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\Renderer\DirectX11Renderer\Renderer.h">
-      <Filter>src\Renderer\DirectX11Renderer</Filter>
+    <ClInclude Include="src\Renderer\OpenGLRenderer\OpenGLRenderer.h">
+      <Filter>src\Renderer\OpenGLRenderer</Filter>
     </ClInclude>
     <ClInclude Include="src\System\Application.h">
       <Filter>src\System</Filter>
@@ -184,6 +193,12 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="vendor\imgui\backends\imgui_impl_dx11.h">
+      <Filter>vendor\imgui\backends</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\imgui\backends\imgui_impl_glfw.h">
+      <Filter>vendor\imgui\backends</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\imgui\backends\imgui_impl_opengl3.h">
       <Filter>vendor\imgui\backends</Filter>
     </ClInclude>
     <ClInclude Include="vendor\imgui\backends\imgui_impl_win32.h">
@@ -239,8 +254,14 @@
     <ClCompile Include="src\Math\DiamondSquare.cpp">
       <Filter>src\Math</Filter>
     </ClCompile>
+    <ClCompile Include="src\Platforms\OpenGLPlatform.cpp">
+      <Filter>src\Platforms</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platforms\WindowsPlatform.cpp">
       <Filter>src\Platforms</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer\DirectX11Renderer\DirectX11Renderer.cpp">
+      <Filter>src\Renderer\DirectX11Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Renderer\DirectX11Renderer\DirectX11Shaders.cpp">
       <Filter>src\Renderer\DirectX11Renderer</Filter>
@@ -248,8 +269,8 @@
     <ClCompile Include="src\Renderer\DirectX11Renderer\DirectX11States.cpp">
       <Filter>src\Renderer\DirectX11Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\Renderer\DirectX11Renderer\Renderer.cpp">
-      <Filter>src\Renderer\DirectX11Renderer</Filter>
+    <ClCompile Include="src\Renderer\OpenGLRenderer\OpenGLRenderer.cpp">
+      <Filter>src\Renderer\OpenGLRenderer</Filter>
     </ClCompile>
     <ClCompile Include="src\System\Application.cpp">
       <Filter>src\System</Filter>
@@ -261,6 +282,9 @@
       <Filter>src\System\Interfaces</Filter>
     </ClCompile>
     <ClCompile Include="src\System\Interfaces\IState.cpp">
+      <Filter>src\System\Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="src\System\Interfaces\IWindow.cpp">
       <Filter>src\System\Interfaces</Filter>
     </ClCompile>
     <ClCompile Include="src\System\Log.cpp">
@@ -285,6 +309,12 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="vendor\imgui\backends\imgui_impl_dx11.cpp">
+      <Filter>vendor\imgui\backends</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\imgui\backends\imgui_impl_glfw.cpp">
+      <Filter>vendor\imgui\backends</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\imgui\backends\imgui_impl_opengl3.cpp">
       <Filter>vendor\imgui\backends</Filter>
     </ClCompile>
     <ClCompile Include="vendor\imgui\backends\imgui_impl_win32.cpp">

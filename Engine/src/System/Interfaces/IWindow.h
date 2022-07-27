@@ -16,6 +16,7 @@ namespace Engine
 		virtual unsigned int GetHeight() const = 0;
 
 		virtual WindowProperties GetWindowProperties() const = 0;
-		static IWindow* Create(WindowProperties& props, IRenderer* renderer);
 	};
+
+	IWindow* NewWindow(WindowProperties& props, IRenderer* renderer);
 }

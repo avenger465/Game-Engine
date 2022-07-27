@@ -1,6 +1,6 @@
 #include "epch.h"
 #include "Renderer\DirectX11Renderer\DirectX11States.h"
-#include "Renderer\DirectX11Renderer\Renderer.h"
+#include "Renderer\DirectX11Renderer\DirectX11Renderer.h"
 
 namespace Engine
 {
@@ -12,7 +12,7 @@ namespace Engine
 	bool DirectX11States::InitStates(IRenderer* renderer)
 	{
 		ENGINE_CORE_INFO("Initialising States: ");
-		Renderer* dx11Renderer = static_cast<Renderer*>(renderer);
+		DirectX11Renderer* dx11Renderer = static_cast<DirectX11Renderer*>(renderer);
 
 		D3D11_SAMPLER_DESC samplerDesc = {};
 

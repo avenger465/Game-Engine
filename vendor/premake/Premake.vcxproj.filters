@@ -13,6 +13,12 @@
     <Filter Include="..\Engine\vendor">
       <UniqueIdentifier>{63DFCF64-4FD8-EEB6-780A-D43B6462CEC2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="..\Engine\vendor\GLFW">
+      <UniqueIdentifier>{82B0FCD6-EE1C-B8D1-B710-502F233CDA39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\Engine\vendor\Glad">
+      <UniqueIdentifier>{2A3CFDD6-96A8-B8D1-5F9C-502FCBC7DA39}</UniqueIdentifier>
+    </Filter>
     <Filter Include="..\Engine\vendor\imgui">
       <UniqueIdentifier>{0DAB0CB9-F9A4-350B-E211-CC1BCEAA9B77}</UniqueIdentifier>
     </Filter>
@@ -23,6 +29,12 @@
     </None>
     <None Include="..\..\Engine\premake5.lua">
       <Filter>..\Engine</Filter>
+    </None>
+    <None Include="..\..\Engine\vendor\GLFW\premake5.lua">
+      <Filter>..\Engine\vendor\GLFW</Filter>
+    </None>
+    <None Include="..\..\Engine\vendor\Glad\premake5.lua">
+      <Filter>..\Engine\vendor\Glad</Filter>
     </None>
     <None Include="..\..\Engine\vendor\imgui\premake5.lua">
       <Filter>..\Engine\vendor\imgui</Filter>

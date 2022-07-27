@@ -14,7 +14,7 @@
 #include "Math/CVector3.h" 
 
 #include "Common/common.h"
-#include "Renderer/DirectX11Renderer/Renderer.h"
+#include "Renderer/DirectX11Renderer/DirectX11Renderer.h"
 
 
 namespace Engine
@@ -29,7 +29,7 @@ namespace Engine
 		// Pass the name of the mesh file to load. Uses assimp (http://www.assimp.org/) to support many file types
 		// Optionally request tangents to be calculated (for normal and parallax mapping - see later lab)
 		// Will throw a std::runtime_error exception on failure (since constructors can't return errors).
-		Mesh(Renderer* renderer, const std::string& fileName, bool requireTangents = false);
+		Mesh(DirectX11Renderer* renderer, const std::string& fileName, bool requireTangents = false);
 
 		//Mesh Constructor to generate a Grid Mesh 
 		Mesh(CVector3 minPt, CVector3 maxPt, int subDivX, int subDivZ, std::vector<std::vector<float>>& temp, bool normals = true, bool uvs = true);
@@ -121,7 +121,7 @@ namespace Engine
 		std::vector<Node>    mNodes;
 
 		bool mHasBones;
-		Renderer* m_Renderer;
+		DirectX11Renderer* m_Renderer;
 
 		std::vector<CVector3> Point;
 		std::vector<uint32_t> Indix;

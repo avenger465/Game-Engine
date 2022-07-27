@@ -18,6 +18,11 @@ project "Engine"
 		"vendor/imgui/backends/imgui_impl_dx11.cpp",
 		"vendor/imgui/backends/imgui_impl_win32.h",
 		"vendor/imgui/backends/imgui_impl_win32.cpp",
+
+		"vendor/imgui/backends/imgui_impl_glfw.h",
+		"vendor/imgui/backends/imgui_impl_glfw.cpp",
+		"vendor/imgui/backends/imgui_impl_opengl3.h",
+		"vendor/imgui/backends/imgui_impl_opengl3.cpp",
 		"Src/Shaders/Common.hlsli"
 	}
 
@@ -34,6 +39,8 @@ project "Engine"
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.ImGuiBackends}",
 		"%{IncludeDir.DirectX}",
+		"%{IncludeDir.Glad}",
+		"%{IncludeDir.GLFW}"
 	}
 
 	libdirs
@@ -51,7 +58,10 @@ project "Engine"
 		"DirectXTex.lib",
 		"d3dcompiler.lib",
 		"winmm.lib",
-		"xinput.lib"
+		"xinput.lib",
+		"GLFW",
+		"Glad",
+		"opengl32.lib"
 	}
 
 	files("vendor/imgui/backends/imgui_impl_win32.cpp")

@@ -26,7 +26,7 @@ namespace Engine
 
 			if (entity->GetComponent("Mesh") && m_Renderer->GetRenderingType() == ERenderingAPI::DirectX11)
 			{
-				Renderer* dx11Renderer = static_cast<Renderer*>(m_Renderer);
+				DirectX11Renderer* dx11Renderer = static_cast<DirectX11Renderer*>(m_Renderer);
 				MeshComponent* comp = static_cast<MeshComponent*>(entity->GetComponent("Mesh"));
 
 				DirectX11Shader* dx11Shader = static_cast<DirectX11Shader*>(shader);

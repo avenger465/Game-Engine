@@ -80,6 +80,10 @@ namespace Engine
 		{
 			return ERenderingAPI::DirectX11;
 		}
+		else if (type == "OpenGL")
+		{
+			return ERenderingAPI::OpenGL;
+		}
 		else
 		{
 			return ERenderingAPI::None;

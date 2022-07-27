@@ -76,7 +76,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DXE_PLATFORM_WINDOWS;E_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\assimp\include;vendor\imgui;vendor\imgui\backends;vendor\DirectXTK;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\assimp\include;vendor\imgui;vendor\imgui\backends;vendor\DirectXTK;vendor\Glad\include;vendor\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -89,8 +89,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>d3d11.lib;assimp-vc140-mt.lib;DirectXTK.lib;DirectXTex.lib;d3dcompiler.lib;winmm.lib;xinput.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\assimp\lib\xSixtyFour;vendor\DirectXTK\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d11.lib;assimp-vc140-mt.lib;DirectXTK.lib;DirectXTex.lib;d3dcompiler.lib;winmm.lib;xinput.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>vendor\assimp\lib\xSixtyFour;vendor\DirectXTK\DirectX-Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -98,7 +98,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DXE_PLATFORM_WINDOWS;E_Release;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\assimp\include;vendor\imgui;vendor\imgui\backends;vendor\DirectXTK;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\assimp\include;vendor\imgui;vendor\imgui\backends;vendor\DirectXTK;vendor\Glad\include;vendor\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -114,8 +114,8 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>d3d11.lib;assimp-vc140-mt.lib;DirectXTK.lib;DirectXTex.lib;d3dcompiler.lib;winmm.lib;xinput.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\assimp\lib\xSixtyFour;vendor\DirectXTK\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d11.lib;assimp-vc140-mt.lib;DirectXTK.lib;DirectXTex.lib;d3dcompiler.lib;winmm.lib;xinput.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>vendor\assimp\lib\xSixtyFour;vendor\DirectXTK\DirectX-Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -123,7 +123,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DXE_PLATFORM_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\assimp\include;vendor\imgui;vendor\imgui\backends;vendor\DirectXTK;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\assimp\include;vendor\imgui;vendor\imgui\backends;vendor\DirectXTK;vendor\Glad\include;vendor\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -134,8 +134,8 @@
       <SubSystem>Windows</SubSystem>
     </Link>
     <Lib>
-      <AdditionalDependencies>d3d11.lib;assimp-vc140-mt.lib;DirectXTK.lib;DirectXTex.lib;d3dcompiler.lib;winmm.lib;xinput.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\assimp\lib\xSixtyFour;vendor\DirectXTK\Dist;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d11.lib;assimp-vc140-mt.lib;DirectXTK.lib;DirectXTex.lib;d3dcompiler.lib;winmm.lib;xinput.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>vendor\assimp\lib\xSixtyFour;vendor\DirectXTK\DirectX-Dist;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -160,10 +160,12 @@
     <ClInclude Include="src\Math\CVector3.h" />
     <ClInclude Include="src\Math\DiamondSquare.h" />
     <ClInclude Include="src\Math\MathHelpers.h" />
+    <ClInclude Include="src\Platforms\OpenGLPlatform.h" />
     <ClInclude Include="src\Platforms\WindowsPlatform.h" />
+    <ClInclude Include="src\Renderer\DirectX11Renderer\DirectX11Renderer.h" />
     <ClInclude Include="src\Renderer\DirectX11Renderer\DirectX11Shaders.h" />
     <ClInclude Include="src\Renderer\DirectX11Renderer\DirectX11States.h" />
-    <ClInclude Include="src\Renderer\DirectX11Renderer\Renderer.h" />
+    <ClInclude Include="src\Renderer\OpenGLRenderer\OpenGLRenderer.h" />
     <ClInclude Include="src\System\Application.h" />
     <ClInclude Include="src\System\Base.h" />
     <ClInclude Include="src\System\EntryPoint.h" />
@@ -181,6 +183,8 @@
     <ClInclude Include="src\Utility\Timer.h" />
     <ClInclude Include="src\epch.h" />
     <ClInclude Include="vendor\imgui\backends\imgui_impl_dx11.h" />
+    <ClInclude Include="vendor\imgui\backends\imgui_impl_glfw.h" />
+    <ClInclude Include="vendor\imgui\backends\imgui_impl_opengl3.h" />
     <ClInclude Include="vendor\imgui\backends\imgui_impl_win32.h" />
   </ItemGroup>
   <ItemGroup>
@@ -200,14 +204,17 @@
     <ClCompile Include="src\Math\CVector2.cpp" />
     <ClCompile Include="src\Math\CVector3.cpp" />
     <ClCompile Include="src\Math\DiamondSquare.cpp" />
+    <ClCompile Include="src\Platforms\OpenGLPlatform.cpp" />
     <ClCompile Include="src\Platforms\WindowsPlatform.cpp" />
+    <ClCompile Include="src\Renderer\DirectX11Renderer\DirectX11Renderer.cpp" />
     <ClCompile Include="src\Renderer\DirectX11Renderer\DirectX11Shaders.cpp" />
     <ClCompile Include="src\Renderer\DirectX11Renderer\DirectX11States.cpp" />
-    <ClCompile Include="src\Renderer\DirectX11Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Renderer\OpenGLRenderer\OpenGLRenderer.cpp" />
     <ClCompile Include="src\System\Application.cpp" />
     <ClCompile Include="src\System\Interfaces\IRenderer.cpp" />
     <ClCompile Include="src\System\Interfaces\IShader.cpp" />
     <ClCompile Include="src\System\Interfaces\IState.cpp" />
+    <ClCompile Include="src\System\Interfaces\IWindow.cpp" />
     <ClCompile Include="src\System\Log.cpp" />
     <ClCompile Include="src\TerrainGenerationScene\TerrainGenerationScene.cpp" />
     <ClCompile Include="src\Utility\GraphicsHelpers.cpp" />
@@ -216,6 +223,8 @@
     <ClCompile Include="src\Utility\Timer.cpp" />
     <ClCompile Include="src\epch.cpp" />
     <ClCompile Include="vendor\imgui\backends\imgui_impl_dx11.cpp" />
+    <ClCompile Include="vendor\imgui\backends\imgui_impl_glfw.cpp" />
+    <ClCompile Include="vendor\imgui\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="vendor\imgui\backends\imgui_impl_win32.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -224,6 +233,12 @@
   <ItemGroup>
     <ProjectReference Include="vendor\imgui\ImGui.vcxproj">
       <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
+    </ProjectReference>
+    <ProjectReference Include="vendor\GLFW\GLFW.vcxproj">
+      <Project>{154B857C-0182-860D-AA6E-6C109684020F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="vendor\Glad\Glad.vcxproj">
+      <Project>{BDD6857C-A90D-870D-52FA-6C103E10030F}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

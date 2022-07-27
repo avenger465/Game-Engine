@@ -14,7 +14,8 @@ namespace Engine
 	enum class ERenderingAPI
 	{
 		None = 0,
-		DirectX11
+		DirectX11,
+		OpenGL
 	};
 
 	struct WindowProperties

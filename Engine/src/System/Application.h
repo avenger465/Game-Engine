@@ -14,7 +14,8 @@ namespace Engine
 		void run();
 
 	private:
-		std::unique_ptr<IWindow> m_Window;
+		//std::unique_ptr<IWindow> m_Window;
+		IWindow* m_Window;
 		IRenderer* m_Renderer = nullptr;
 
 	};

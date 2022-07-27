@@ -1,6 +1,6 @@
 #include "epch.h"
 #include "DirectX11Shaders.h"
-#include "Renderer\DirectX11Renderer\Renderer.h"
+#include "Renderer\DirectX11Renderer\DirectX11Renderer.h"
 
 namespace Engine
 {
@@ -101,7 +101,7 @@ namespace Engine
 
 		if (m_Renderer->GetRenderingType() == ERenderingAPI::DirectX11)
 		{
-			Renderer* dx11Renderer = static_cast<Renderer*>(m_Renderer);
+			DirectX11Renderer* dx11Renderer = static_cast<DirectX11Renderer*>(m_Renderer);
 
 			HRESULT hr = dx11Renderer->GetDevice()->CreateVertexShader(byteCode.data(), byteCode.size(), nullptr, &shader);
 			if (FAILED(hr))
@@ -138,7 +138,7 @@ namespace Engine
 
 		if (m_Renderer->GetRenderingType() == ERenderingAPI::DirectX11)
 		{
-			Renderer* dx11Renderer = static_cast<Renderer*>(m_Renderer);
+			DirectX11Renderer* dx11Renderer = static_cast<DirectX11Renderer*>(m_Renderer);
 
 			HRESULT hr = dx11Renderer->GetDevice()->CreatePixelShader(byteCode.data(), byteCode.size(), nullptr, &shader);
 			if (FAILED(hr))

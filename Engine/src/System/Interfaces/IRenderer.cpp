@@ -1,6 +1,7 @@
 #include "epch.h"
 #include "IRenderer.h"
-#include "Renderer/DirectX11Renderer/Renderer.h"
+#include "Renderer/DirectX11Renderer/DirectX11Renderer.h"
+#include "Renderer\OpenGLRenderer\OpenGLRenderer.h"
 
 namespace Engine
 {
@@ -8,7 +9,11 @@ namespace Engine
 	{
 		if (type == ERenderingAPI::DirectX11)
 		{
-			return new Renderer();
+			return new DirectX11Renderer();
+		}
+		if (type == ERenderingAPI::OpenGL)
+		{
+			return new OpenGLRenderer();
 		}
 		else return nullptr;
 	}

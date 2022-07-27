@@ -7,7 +7,7 @@
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
 
-#include "Renderer/DirectX11Renderer/Renderer.h"
+#include "Renderer/DirectX11Renderer/DirectX11Renderer.h"
 
 #include "Utility\GraphicsHelpers.h"
 #include "Utility\ColourRGBA.h"
@@ -17,10 +17,6 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 
 namespace Engine
 {
-	IWindow* IWindow::Create(WindowProperties& props, IRenderer* renderer)
-	{
-		return new Window(props, renderer);
-	}
 
 	Window::Window(WindowProperties& WindowProps, IRenderer* renderer)
 	{
@@ -83,7 +79,7 @@ namespace Engine
 		wcex.hIconSm = stockIcon.hIcon;
 		if (!RegisterClassEx(&wcex)) // Returns false on failure
 		{
-			return false;
+			return FALSE;
 		}
 
 		// Select the type of window to show our application in
@@ -113,7 +109,7 @@ namespace Engine
 			CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, m_hInstance, nullptr);
 		if (!m_hWnd)
 		{
-			return false;
+			return FALSE;
 		}
 
 		props.Hwnd = m_hWnd;
@@ -128,7 +124,6 @@ namespace Engine
 	HRESULT Window::Run(IRenderer* renderer)
 	{
 		HRESULT hr = S_OK;
-
 
 		//// Prepare TL-Engine style input functions
 		InitInput();
@@ -152,7 +147,7 @@ namespace Engine
 		// Setup Platform/Renderer bindings
 		ImGui_ImplWin32_Init(m_WindowProps.Hwnd);
 
-		Renderer* currentRenderer = static_cast<Renderer*>(renderer);
+		DirectX11Renderer* currentRenderer = static_cast<DirectX11Renderer*>(renderer);
 		ImGui_ImplDX11_Init(currentRenderer->GetDevice(), currentRenderer->GetDeviceContext());
 
 		
@@ -291,7 +286,7 @@ namespace Engine
 	void Window::RenderScene(IRenderer* renderer)
 	{
 
-		Renderer* currentRenderer = static_cast<Renderer*>(renderer);
+		DirectX11Renderer* currentRenderer = static_cast<DirectX11Renderer*>(renderer);
 		//IMGUI
 		//*******************************
 		// Prepare ImGUI for this frame
@@ -366,7 +361,7 @@ namespace Engine
 	void Window::RenderSceneFromCamera(IRenderer* renderer, Camera* camera)
 	{
 
-		Renderer* currentRenderer = static_cast<Renderer*>(renderer);
+		DirectX11Renderer* currentRenderer = static_cast<DirectX11Renderer*>(renderer);
 		if (currentRenderer->GetRenderingType() == ERenderingAPI::DirectX11)
 		{
 			// Set camera matrices in the constant buffer and send over to GPU

@@ -1,7 +1,7 @@
 #pragma once
 #include "System\Interfaces\IScene.h"
 #include "System\Interfaces\IRenderer.h"
-#include "Renderer\DirectX11Renderer\Renderer.h"
+#include "Renderer\DirectX11Renderer\DirectX11Renderer.h"
 #include "ECS\EntityManager.h"
 #include "Math/CPerlinNoise.h"
 #include "Math/DiamondSquare.h"

@@ -6,7 +6,7 @@
 #include "ECS\Components\MeshComponent.h"
 #include "System\Interfaces\IShader.h"
 #include "System\Interfaces\IState.h"
-#include "Renderer\DirectX11Renderer\Renderer.h"
+#include "Renderer\DirectX11Renderer\DirectX11Renderer.h"
 #include "Renderer\DirectX11Renderer\DirectX11States.h"
 #include "Renderer\DirectX11Renderer\DirectX11Shaders.h"
 
@@ -29,7 +29,7 @@ namespace Engine
 
 			if (entity->GetComponent("Mesh") && m_Renderer->GetRenderingType() == ERenderingAPI::DirectX11)
 			{
-				Renderer* dx11Renderer = static_cast<Renderer*>(m_Renderer);
+				DirectX11Renderer* dx11Renderer = static_cast<DirectX11Renderer*>(m_Renderer);
 				MeshComponent* comp = static_cast<MeshComponent*>(entity->GetComponent("Mesh"));
 
 

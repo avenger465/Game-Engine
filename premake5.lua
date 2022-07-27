@@ -27,6 +27,8 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 group "Dependencies"
 	include "vendor/premake"
 	include "Engine/vendor/imgui"
+	include "Engine/vendor/GLFW"
+	include "Engine/vendor/Glad"
 group ""
 
 group "Core"

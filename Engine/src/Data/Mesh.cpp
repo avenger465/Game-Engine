@@ -22,7 +22,7 @@ namespace Engine
 	// Will throw a std::runtime_error exception on failure (since constructors can't return errors).
 
 
-	Mesh::Mesh(Renderer* renderer, const std::string& fileName, bool requireTangents /*= false*/)
+	Mesh::Mesh(DirectX11Renderer* renderer, const std::string& fileName, bool requireTangents /*= false*/)
 	{
 		m_Renderer = renderer;
 
