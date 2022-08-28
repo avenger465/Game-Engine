@@ -276,7 +276,8 @@ struct aiBone {
     aiBone()
     : mName()
     , mNumWeights( 0 )
-    , mWeights( nullptr ) {
+    , mWeights( nullptr )
+    {
         // empty
     }
 
@@ -443,7 +444,7 @@ struct aiAnimMesh
     /** 
      * Weight of the AnimMesh. 
      */
-    float mWeight;
+    float mWeight = 0.0f;
 
 #ifdef __cplusplus
 

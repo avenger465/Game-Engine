@@ -17,6 +17,7 @@ namespace Engine
 		m_Renderer = renderer;
 		if (m_Renderer->GetRenderingType() == ERenderingAPI::DirectX11)
 		{
+			ENGINE_CORE_INFO("Initialising Shaders");
 			std::filesystem::path MainPath = std::filesystem::current_path(); //Gets the current working directory
 
 			//Creates the path to the shader path
@@ -40,6 +41,10 @@ namespace Engine
 
 	void DirectX11Shader::ReleaseShaders()
 	{
+		m_PixelLightingPixelShader->Release();	 m_PixelLightingPixelShader = nullptr;
+		m_PixelLightingVertexShader->Release();  m_PixelLightingVertexShader = nullptr;
+		m_BasicTransformVertexShader->Release(); m_BasicTransformVertexShader = nullptr;
+		m_SkinningVertexShader->Release();		 m_SkinningVertexShader = nullptr;
 	}
 
 	ID3D11VertexShader* DirectX11Shader::GetVertexShader(EVertexShader vertexShader)
@@ -79,6 +84,10 @@ namespace Engine
 
 	ID3D11VertexShader* DirectX11Shader::LoadVertexShader(std::string shaderName)
 	{
+
+		// Create shader object from loaded file (we will use the object later when rendering)
+		ID3D11VertexShader* shader = 0;
+
 		// Open compiled shader object file
 		std::ifstream shaderFile(shaderName + ".cso", std::ios::in | std::ios::binary | std::ios::ate);
 		if (!shaderFile.is_open())
@@ -96,9 +105,6 @@ namespace Engine
 			return nullptr;
 		}
 
-		// Create shader object from loaded file (we will use the object later when rendering)
-		ID3D11VertexShader* shader;
-
 		if (m_Renderer->GetRenderingType() == ERenderingAPI::DirectX11)
 		{
 			DirectX11Renderer* dx11Renderer = static_cast<DirectX11Renderer*>(m_Renderer);
@@ -108,10 +114,9 @@ namespace Engine
 			{
 				return nullptr;
 			}
-
-			return shader;
 		}
 
+		return shader;
 	}
 
 	ID3D11PixelShader* DirectX11Shader::LoadPixelShader(std::string shaderName)

@@ -11,12 +11,13 @@ namespace Engine
 		}
 		~Main()
 		{
-
+		
 		}
 	};
 
 	Application* CreateApplication()
 	{
+		APP_CORE_INFO("Creating Application");
 		return new Main();
 	}
 }

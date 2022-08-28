@@ -29,6 +29,14 @@ namespace Engine
 				attr = childElement->FindAttribute("Width");
 				if (attr != nullptr) m_WindowProps.Width = attr->FloatValue();
 
+				childElement = element->FirstChildElement("VSync");
+				attr = childElement->FindAttribute("Active");
+				if (attr != nullptr)
+				{
+					bool m = attr->BoolValue();
+					m_WindowProps.VSync = m;
+				}
+
 				childElement = element->FirstChildElement("RenderingAPI");
 				attr = childElement->FindAttribute("Type");
 				if (attr != nullptr) m_WindowProps.RenderType = GetRenderingAPI(attr->Value());
@@ -60,6 +68,10 @@ namespace Engine
 		child = doc.NewElement("Dimensions");
 		child->SetAttribute("Height", settings.Height);
 		child->SetAttribute("Width", settings.Width);
+		root->InsertEndChild(child);
+
+		child = doc.NewElement("VSync");
+		child->SetAttribute("Active", settings.VSync);
 		root->InsertEndChild(child);
 
 		child = doc.NewElement("RenderingAPI");

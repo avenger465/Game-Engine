@@ -60,7 +60,7 @@ namespace Engine
 		stockIcon.cbSize = sizeof(stockIcon);
 		if (SHGetStockIconInfo(SIID_APPLICATION, SHGSI_ICON, &stockIcon) != S_OK) // Returns false on failure
 		{
-			return false;
+			return E_FAIL;
 		}
 
 		// Register window class. Defines various UI features of the window for our application.
@@ -79,13 +79,13 @@ namespace Engine
 		wcex.hIconSm = stockIcon.hIcon;
 		if (!RegisterClassEx(&wcex)) // Returns false on failure
 		{
-			return FALSE;
+			return 0;
 		}
 
 		// Select the type of window to show our application in
 		
 
-		Scene = new TerrainGenerationScene(renderer, CVector3(0.5f, 0.5f, 0.5f), 5, ColourRGBA(0.5f,0.5f,0.5f));
+		Scene = new TerrainGenerationScene(renderer, props, CVector3(0.5f, 0.5f, 0.5f), 5, ColourRGBA(0.5f,0.5f,0.5f));
 
 		DWORD windowStyle;
 
@@ -96,8 +96,8 @@ namespace Engine
 		// overall winder will be larger because it includes the borders, title bar etc. This code calculates
 		// the overall size of the window given our choice of viewport size.
 
-		RECT rc = { 0, 0, props.Width, props.Height };
-
+		RECT rc = { 0, 0, static_cast<long>(props.Width), static_cast<long>(props.Height) };
+		
 
 		AdjustWindowRect(&rc, windowStyle, FALSE);
 
@@ -109,7 +109,7 @@ namespace Engine
 			CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, m_hInstance, nullptr);
 		if (!m_hWnd)
 		{
-			return FALSE;
+			return 0;
 		}
 
 		props.Hwnd = m_hWnd;
@@ -142,7 +142,7 @@ namespace Engine
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable; //Enable each window to be a seperate viewport
 
 		// Setup Dear ImGui style
-		//ImGui::StyleColorsDark();
+		ImGui::StyleColorsDark();
 
 		// Setup Platform/Renderer bindings
 		ImGui_ImplWin32_Init(m_WindowProps.Hwnd);
@@ -180,15 +180,17 @@ namespace Engine
 			else // When no windows messages left to process then render & update our scene
 			{
 				// Update the scene by the amount of time since the last frame
-
-				// Update the scene by the amount of time since the last frame
 				float frameTime = m_Timer.GetLapTime();
 				//Scene->UpdateScene(frameTime, HWnd);
+				Scene->UpdateScene(frameTime);
+
+				//Begin the scene
+				currentRenderer->BeginScene(Scene->GetBackgroundColour(), Scene->GetCamera()->Position());
 
 				RenderScene(renderer);
 				//// Render the scene
-
-				Scene->UpdateScene(frameTime);
+				currentRenderer->EndScene(Scene->GetVSync());
+				
 
 			}
 		}
@@ -202,12 +204,14 @@ namespace Engine
 		ImGui_ImplWin32_Shutdown();   
 		ImGui::DestroyContext();  
  
+		return hr;
 		//*******************************
 	}
 
 
 	LRESULT Window::WindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
+		LRESULT LR = S_OK;
 		if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam)) // IMGUI this line passes user input to ImGUI
 			return true;
 
@@ -281,6 +285,8 @@ namespace Engine
 		default:
 			return DefWindowProc(hWnd, msg, wParam, lParam);
 		}
+
+		return LR;
 	}
 
 	void Window::RenderScene(IRenderer* renderer)
@@ -302,37 +308,12 @@ namespace Engine
 		//// Common settings ////
 		if (currentRenderer->GetRenderingType() == ERenderingAPI::DirectX11) // Checks the correct renderer
 		{
-			//DirectX11Renderer* d11Renderer = static_cast<DirectX11Renderer*>(m_Renderer); // Casts the renderer to the correct renderer
-
-			// Sets the correct scene settings
-			currentRenderer->PerFrameConstants.ambientColour = CVector3{0.5, 0.5, 0.5};// m_Scenes[m_SceneIndex]->GetAmbientColour();
-			currentRenderer->PerFrameConstants.specularPower = 0.3f; //m_Scenes[m_SceneIndex]->GetSpecularPower();
-			currentRenderer->PerFrameConstants.cameraPosition = Scene->GetCamera()->Position();
 
 			//// Main scene rendering ////
 
 			// Set the back buffer as the target for rendering and select the main depth buffer.
 			// When finished the back buffer is sent to the "front buffer" - which is the monitor.
 			ID3D11RenderTargetView* backBuffer = currentRenderer->GetBackBuffer();
-			ID3D11RenderTargetView* SceneBuffer = currentRenderer->GetSceneRenderTarget();
-
-			// Clear the back buffer to a fixed colour and the depth buffer to the far distance
-			ColourRGBA backgroundColour = Scene->GetBackgroundColour();// m_Scenes[m_SceneIndex]->GetBackgroundColour();
-			currentRenderer->GetDeviceContext()->OMSetRenderTargets(1, &SceneBuffer, currentRenderer->GetSceneDepthStencil());
-
-			// Clear the back buffer to a fixed colour and the depth buffer to the far distance
-			currentRenderer->GetDeviceContext()->ClearRenderTargetView(SceneBuffer, &backgroundColour.r);
-			currentRenderer->GetDeviceContext()->ClearDepthStencilView(currentRenderer->GetSceneDepthStencil(), D3D11_CLEAR_DEPTH, 1.0f, 0);
-
-			// Setup the viewport to the size of the main window
-			D3D11_VIEWPORT vp;
-			vp.Width = static_cast<FLOAT>(m_WindowProps.Width);
-			vp.Height = static_cast<FLOAT>(m_WindowProps.Height);
-			vp.MinDepth = 0.0f;
-			vp.MaxDepth = 1.0f;
-			vp.TopLeftX = 0;
-			vp.TopLeftY = 0;
-			currentRenderer->GetDeviceContext()->RSSetViewports(1, &vp);
 
 			// Render the scene from the main camera
 			RenderSceneFromCamera(renderer, Scene->GetCamera());
@@ -349,12 +330,6 @@ namespace Engine
 				ImGui::UpdatePlatformWindows();
 				ImGui::RenderPlatformWindowsDefault();
 			}
-			//// Scene completion ////
-
-			// When drawing to the off-screen back buffer is complete, we "present" the image to the front buffer (the screen)
-			// Set first parameter to 1 to lock to vsync (typically 60fps)
-			currentRenderer->GetSwapChain()->Present(true ? 1 : 0, 0);
-
 		}
 	}
 

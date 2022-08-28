@@ -19,6 +19,7 @@ namespace Engine
 
 		m_WindowProps = WindowProps;
 
+		//Display the Hardware information of the computer
 		GetHardwareInfo();
 		GetCpuInfo();
 
@@ -27,13 +28,26 @@ namespace Engine
 		// Create a Direct3D device (i.e. initialise D3D) and create a swap-chain (create a back buffer to render to)
 		DXGI_SWAP_CHAIN_DESC swapDesc = {};
 		swapDesc.OutputWindow = m_WindowProps.Hwnd;                           // Target window
-		swapDesc.Windowed = TRUE;
+	    swapDesc.Windowed = TRUE;
 		swapDesc.BufferCount = 1;
 		swapDesc.BufferDesc.Width = m_WindowProps.Width;             // Target window size
 		swapDesc.BufferDesc.Height = m_WindowProps.Height;            // --"--
 		swapDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM; // Pixel format of target window
-		swapDesc.BufferDesc.RefreshRate.Numerator = 60;        // Refresh rate of monitor (provided as fraction = 60/1 here)
-		swapDesc.BufferDesc.RefreshRate.Denominator = 1;         // --"--
+
+
+		if (m_WindowProps.VSync)
+		{
+			swapDesc.BufferDesc.RefreshRate.Numerator = numerator;        
+			swapDesc.BufferDesc.RefreshRate.Denominator = denominator;    
+			ENGINE_CORE_TRACE("Refresh Rate: {0} Hz", swapDesc.BufferDesc.RefreshRate.Numerator / swapDesc.BufferDesc.RefreshRate.Denominator);
+		}
+		else
+		{
+			swapDesc.BufferDesc.RefreshRate.Numerator = 0;
+			swapDesc.BufferDesc.RefreshRate.Denominator = 1;
+
+			ENGINE_CORE_TRACE("Refresh Rate: {0} Hz", swapDesc.BufferDesc.RefreshRate.Numerator / swapDesc.BufferDesc.RefreshRate.Denominator);
+		}
 		swapDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 		swapDesc.SampleDesc.Count = 1;
 		swapDesc.SampleDesc.Quality = 0;
@@ -43,8 +57,7 @@ namespace Engine
 			&swapDesc, &m_SwapChain, &m_D3DDevice, nullptr, &m_D3DContext);
 		if (FAILED(hr))
 		{
-			/*ErrorLogger errorLog;
-			errorLog.ErrorMessage(m_Props, "Error creating Direct3D device");*/
+			ENGINE_CORE_ERROR("Failure creating DirectX11 Device");
 			return false;
 		}
 
@@ -53,16 +66,14 @@ namespace Engine
 		hr = m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffer);
 		if (FAILED(hr))
 		{
-			/*ErrorLogger errorLog;
-			errorLog.ErrorMessage(m_Props, "Error creating swap chain");*/
+			ENGINE_CORE_ERROR("Failure creating Swap Chain");
 			return false;
 		}
 		hr = m_D3DDevice->CreateRenderTargetView(backBuffer, NULL, &m_BackBufferRenderTarget);
 		backBuffer->Release();
 		if (FAILED(hr))
 		{
-			/*ErrorLogger errorLog;
-			errorLog.ErrorMessage(m_Props, "Error creating render target view");*/
+			ENGINE_CORE_ERROR("Failure creating Render Target View");
 			return false;
 		}
 
@@ -84,8 +95,7 @@ namespace Engine
 		hr = m_D3DDevice->CreateTexture2D(&dbDesc, nullptr, &m_DepthStencilTexture);
 		if (FAILED(hr))
 		{
-			/*ErrorLogger errorLog;
-			errorLog.ErrorMessage(m_Props, "Error creating depth buffer texture");*/
+			ENGINE_CORE_ERROR("Failure creating Depth Buffer Texture");
 			return false;
 		}
 
@@ -99,12 +109,9 @@ namespace Engine
 			&m_DepthStencil);
 		if (FAILED(hr))
 		{
-			/*ErrorLogger errorLog;
-			errorLog.ErrorMessage(m_Props, "Error creating depth buffer view");*/
+			ENGINE_CORE_ERROR("Failure creating Depth Stencil View");
 			return false;
 		}
-
-
 
 		// Create GPU-side constant buffers to receive the gPerFrameConstants and gPerModelConstants structures above
 		// These allow us to pass data from CPU to shaders such as lighting information or matrices
@@ -113,8 +120,7 @@ namespace Engine
 		PerModelConstantBuffer = CreateConstantBuffer(sizeof(PerModelConstants));
 		if (PerFrameConstantBuffer == nullptr || PerModelConstantBuffer == nullptr)
 		{
-			/*ErrorLogger errorLog;
-			errorLog.ErrorMessage(m_Props, "Error creating constant buffers");*/
+			ENGINE_CORE_ERROR("Failure creating Constant Buffers");
 			return false;
 		}
 
@@ -136,7 +142,7 @@ namespace Engine
 		SceneDesc.MiscFlags = 0;
 		if (FAILED(m_D3DDevice->CreateTexture2D(&SceneDesc, NULL, &SceneTexture)))
 		{
-			//LastError = "Error creating Scene texture";
+			ENGINE_CORE_CRITICAL("Error creating Scene Texture");
 			return false;
 		}
 
@@ -144,7 +150,7 @@ namespace Engine
 		// we use when rendering to it (see RenderScene function below)
 		if (FAILED(m_D3DDevice->CreateRenderTargetView(SceneTexture, NULL, &SceneRenderTarget)))
 		{
-			//LastError = "Error creating Scene render target view";
+			ENGINE_CORE_CRITICAL("Error creating Scene Render Target");
 			return false;
 		}
 
@@ -156,10 +162,9 @@ namespace Engine
 		srDesc.Texture2D.MipLevels = 1;
 		if (FAILED(m_D3DDevice->CreateShaderResourceView(SceneTexture, &srDesc, &SceneTextureSRV)))
 		{
-			//LastError = "Error creating Scene shader resource view";
+			ENGINE_CORE_CRITICAL("Error creating Scene Texture View");
 			return false;
 		}
-
 
 		//**** Create Scene Depth Buffer ****//
 		//**** This depth buffer can be shared with any other textures of the same size
@@ -177,7 +182,7 @@ namespace Engine
 		SceneDesc.MiscFlags = 0;
 		if (FAILED(m_D3DDevice->CreateTexture2D(&SceneDesc, NULL, &SceneDepthStencil)))
 		{
-			//LastError = "Error creating Scene depth stencil texture";
+			ENGINE_CORE_CRITICAL("Error creating Scene Depth Stencil View");
 			return false;
 		}
 
@@ -189,14 +194,12 @@ namespace Engine
 		sceneDescDSV.Flags = 0;
 		if (FAILED(m_D3DDevice->CreateDepthStencilView(SceneDepthStencil, &sceneDescDSV, &SceneDepthStencilView)))
 		{
-			//LastError = "Error creating Scene depth stencil view";
+			ENGINE_CORE_CRITICAL("Error creating Scene Depth Stencil View");
 			return false;
 		}
 
-
 		return true;
 	}
-
 
 	void DirectX11Renderer::ShutdownRenderer()
 	{
@@ -214,9 +217,29 @@ namespace Engine
 		if (PerModelConstantBuffer)   PerModelConstantBuffer->Release();
 	}
 
-	const std::string DirectX11Renderer::GetRenderingTypeString()
+	void DirectX11Renderer::BeginScene(ColourRGBA Background, CVector3 Position)
 	{
-		return "DirectX11";
+		PerFrameConstants.ambientColour = CVector3{ 0.5, 0.5, 0.5 };// m_Scenes[m_SceneIndex]->GetAmbientColour();
+		PerFrameConstants.specularPower = 0.3f; //m_Scenes[m_SceneIndex]->GetSpecularPower();
+		PerFrameConstants.cameraPosition = Position;
+
+		m_D3DContext->OMSetRenderTargets(1, &SceneRenderTarget, SceneDepthStencilView);
+		m_D3DContext->ClearRenderTargetView(SceneRenderTarget, &Background.r);
+		m_D3DContext->ClearDepthStencilView(SceneDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+
+		D3D11_VIEWPORT vp;
+		vp.Width = static_cast<FLOAT>(m_WindowProps.Width);
+		vp.Height = static_cast<FLOAT>(m_WindowProps.Height);
+		vp.MinDepth = 0.0f;
+		vp.MaxDepth = 1.0f;
+		vp.TopLeftX = 0;
+		vp.TopLeftY = 0;
+		m_D3DContext->RSSetViewports(1, &vp);
+	}
+
+	void DirectX11Renderer::EndScene(bool VSync)
+	{
+		m_SwapChain->Present(m_WindowProps.VSync ? 1 : 0, 0);
 	}
 
 	ID3D11Buffer* DirectX11Renderer::CreateConstantBuffer(int size)
@@ -240,15 +263,76 @@ namespace Engine
 	{
 		return false;
 	}
+	void DirectX11Renderer::GetRenderStats(float frameTime, std::string& FPS, std::string& FrameTime)
+	{
+		const float fpsUpdateTime = 0.5f; // How long between updates (in seconds)
+		static float totalFrameTime = 0;
+		static int frameCount = 0;
+		totalFrameTime += frameTime;
+		++frameCount;
+
+		if (totalFrameTime > fpsUpdateTime)
+		{
+			// Displays FPS rounded to nearest int, and frame time (more useful for developers) in milliseconds to 2 decimal places
+			float avgFrameTime = totalFrameTime / frameCount;
+			std::ostringstream frameTimeMs;
+			frameTimeMs.precision(2);
+			frameTimeMs << std::fixed << avgFrameTime * 1000;
+			FrameTime = frameTimeMs.str();
+			totalFrameTime = 0;
+			frameCount = 0;
+			FPS = std::to_string(static_cast<int>(1 / avgFrameTime + 0.5f));
+		}
+	}
 	void DirectX11Renderer::GetHardwareInfo()
 	{
 		IDXGIFactory* factory = nullptr;
+		IDXGIAdapter* pAdapter;
+		DXGI_ADAPTER_DESC desc;
+		IDXGIOutput* adapterOutput;
+
+		
 		HRESULT result = CreateDXGIFactory1(__uuidof(IDXGIFactory), (void**)&factory);
 
-		IDXGIAdapter* pAdapter;
-
-		DXGI_ADAPTER_DESC desc;
 		factory->EnumAdapters(0, &pAdapter);
+
+		
+
+		pAdapter->EnumOutputs(0, &adapterOutput);
+
+		result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, NULL);
+		if (FAILED(result))
+		{
+			ENGINE_CORE_ERROR("Failure to get display mode list");
+		}
+
+		displayModeList = new DXGI_MODE_DESC[numModes];
+		if (!displayModeList)
+		{
+			ENGINE_CORE_ERROR("Failure to initialise display mode list");
+		}
+
+		// Now fill the display mode list structures.
+		result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, displayModeList);
+		if (FAILED(result))
+		{
+			ENGINE_CORE_ERROR("Failure to initialise display mode list");
+		}
+
+
+		// Now go through all the display modes and find the one that matches the screen width and height.
+		// When a match is found store the numerator and denominator of the refresh rate for that monitor.
+		for (i = 0; i < numModes; i++)
+		{
+			if (displayModeList[i].Width == (unsigned int)m_WindowProps.Width)
+			{
+				if (displayModeList[i].Height == (unsigned int)m_WindowProps.Height)
+				{
+					numerator = displayModeList[i].RefreshRate.Numerator;
+					denominator = displayModeList[i].RefreshRate.Denominator;
+				}
+			}
+		}
 
 		pAdapter->GetDesc(&desc);
 		m_videoCardMemory = (int)(desc.DedicatedVideoMemory / 1024 / 1024);
@@ -260,6 +344,7 @@ namespace Engine
 
 		SAFE_RELEASE(pAdapter);
 		SAFE_RELEASE(factory);
+		SAFE_RELEASE(adapterOutput);
 	}
 
 	std::string DirectX11Renderer::GetCpuInfo()

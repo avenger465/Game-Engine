@@ -12,9 +12,9 @@ class CVector3
 	// Concrete class - public access
 public:
 	// Vector components
-	float x;
-	float y;
-	float z;
+	float x = 0.0f;
+	float y = 0.0f;
+	float z = 0.0f;
 
 	/*-----------------------------------------------------------------------------------------
 		Constructors

@@ -35,6 +35,7 @@ namespace Engine
 {
 	OpenGLWindow::OpenGLWindow(WindowProperties& props)
 	{
+		m_WindowProps = props;
 		Init();
 	}
 	void OpenGLWindow::Update(IRenderer* renderer)
@@ -55,7 +56,7 @@ namespace Engine
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 		// Create a GLFWwindow object of 800 by 800 pixels, naming it "YoutubeOpenGL"
-		m_Window = glfwCreateWindow(800, 800, "ImGui + GLFW", NULL, NULL);
+		m_Window = glfwCreateWindow(m_WindowProps.Width, m_WindowProps.Height, m_WindowProps.Title.c_str(), NULL, NULL);
 		// Error check if the window fails to create
 		if (m_Window == NULL)
 		{
@@ -66,11 +67,22 @@ namespace Engine
 		// Introduce the window into the current context
 		glfwMakeContextCurrent(m_Window);
 
+		// Initialize ImGUI
+		IMGUI_CHECKVERSION();
+		ImGui::CreateContext();
+		ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+		io.Fonts->AddFontFromFileTTF("OpenSans-Bold.ttf", 15.0f);
+
+		ImGui::StyleColorsDark();
+		ImGui_ImplGlfw_InitForOpenGL(m_Window, true);
+		ImGui_ImplOpenGL3_Init("#version 330");
+
 		//Load GLAD so it configures OpenGL
 		gladLoadGL();
 		// Specify the viewport of OpenGL in the Window
 		// In this case the viewport goes from x = 0, y = 0, to x = 800, y = 800
-		glViewport(0, 0, 800, 800);
+		glViewport(0, 0, m_WindowProps.Width, m_WindowProps.Height);
 		return true;
 	}
 	bool OpenGLWindow::Run()
@@ -135,13 +147,6 @@ namespace Engine
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 
-		// Initialize ImGUI
-		IMGUI_CHECKVERSION();
-		ImGui::CreateContext();
-		ImGuiIO& io = ImGui::GetIO(); (void)io;
-		ImGui::StyleColorsDark();
-		ImGui_ImplGlfw_InitForOpenGL(m_Window, true);
-		ImGui_ImplOpenGL3_Init("#version 330");
 
 		// Variables to be changed in the ImGUI window
 		bool drawTriangle = true;
@@ -189,6 +194,7 @@ namespace Engine
 			ImGui::ColorEdit4("Color", color);
 			// Ends the window
 			ImGui::End();
+
 
 			// Export variables to shader
 			glUseProgram(shaderProgram);

@@ -4,7 +4,7 @@
 #include "Math\CMatrix4x4.h"
 
 #include <winnt.h>
-
+#include <Utility/ColourRGBA.h>
 
 struct PerFrameConstants
 {
@@ -32,7 +32,6 @@ struct PerModelConstants
 	float      paddingA;
 };
 
-
 namespace Engine
 {
 	class DirectX11Renderer : public IRenderer
@@ -47,17 +46,19 @@ namespace Engine
 
 		virtual const ERenderingAPI GetRenderingType() override {return ERenderingAPI::DirectX11;}
 
-		virtual const std::string GetRenderingTypeString() override;
+		virtual const std::string GetRenderingTypeString() override { return std::string("DirectX11"); };
 		
 		virtual WindowProperties GetWindowProperties() override { return m_WindowProps; }
 
+		void BeginScene(ColourRGBA Background, CVector3 Position);
+		void EndScene(bool VSync);
 
 	public:
-		ID3D11Device* GetDevice() { return m_D3DDevice; } // Returns the DirectX11 device
-		ID3D11DeviceContext* GetDeviceContext() { return m_D3DContext; } // Returns the DirectX11 device context
-		IDXGISwapChain* GetSwapChain() { return m_SwapChain; } // Returns the DirectX11 Swapchain
+		ID3D11Device* GetDevice() { return m_D3DDevice; }							 // Returns the DirectX11 device
+		ID3D11DeviceContext* GetDeviceContext() { return m_D3DContext; }			 // Returns the DirectX11 device context
+		IDXGISwapChain* GetSwapChain() { return m_SwapChain; }						 // Returns the DirectX11 Swapchain
 		ID3D11RenderTargetView* GetBackBuffer() { return m_BackBufferRenderTarget; } // Returns the DirectX11 BackBuffer
-		ID3D11DepthStencilView* GetDepthStencil() { return m_DepthStencil; } // Returns the DirectX11 Depth Stencil
+		ID3D11DepthStencilView* GetDepthStencil() { return m_DepthStencil; }		 // Returns the DirectX11 Depth Stencil
 
 		ID3D11RenderTargetView* GetSceneRenderTarget() { return SceneRenderTarget; } // Returns the DirectX11 BackBuffer
 		ID3D11ShaderResourceView* GetSceneShaderResourceView() { return SceneTextureSRV; } // Returns the DirectX11 BackBuffer
@@ -66,6 +67,8 @@ namespace Engine
 		ID3D11Buffer* CreateConstantBuffer(int size); // Function used for creating a constant buffer
 
 		bool LoadTextureFromFile(const char* filename, ID3D11ShaderResourceView** out_srv, int* out_width, int* out_height);
+
+		void GetRenderStats(float frameTime, std::string& FPS, std::string& FrameTime);
 
 	private:
 		void GetHardwareInfo();
@@ -105,5 +108,8 @@ namespace Engine
 
 		char m_videoCardDescription[128];
 		int m_videoCardMemory;
+
+		unsigned int numModes, i, numerator, denominator;
+		DXGI_MODE_DESC* displayModeList;
 	};
 }

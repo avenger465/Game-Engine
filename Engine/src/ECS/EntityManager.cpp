@@ -14,11 +14,10 @@ namespace Engine
 		m_IsEnumerating = true;
 		
 
-		ENGINE_CORE_INFO("Initialising Shaders");
+		//ENGINE_CORE_INFO("Initialising Shaders");
 		m_Shader = SetShader(m_Renderer->GetRenderingType());
 		if(!m_Shader->InitShaders(m_Renderer)) ENGINE_CORE_ERROR("Error Initialising Shaders");
 
-		ENGINE_CORE_INFO("Initialising Shaders");
 		m_State = SetStates(m_Renderer->GetRenderingType());
 		if(!m_State->InitStates(m_Renderer)) ENGINE_CORE_ERROR("Error Initialising States");
 	}

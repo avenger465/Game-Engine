@@ -101,7 +101,5 @@ namespace Engine
 		CVector3 m_Position;
 		CVector3 m_Rotation;
 		CVector3 m_Scale;
-
-		float m_W;
 	};
 }

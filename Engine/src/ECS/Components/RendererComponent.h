@@ -98,21 +98,22 @@ namespace Engine
 
 
 	private:
-		IRenderer* m_Renderer;
 
-		Mesh* m_Mesh;
-		Model* m_Model;
+		IRenderer* m_Renderer = 0;
 
-		ID3D11Resource* m_TextureResource;
-		ID3D11ShaderResourceView* m_TextureSRV;
+		Mesh* m_Mesh = 0;
+		Model* m_Model = 0;
 
-		ID3D11PixelShader* m_PixelShader;
-		ID3D11VertexShader* m_VertexShader;
+		ID3D11Resource* m_TextureResource = 0;
+		ID3D11ShaderResourceView* m_TextureSRV = 0;
 
-		ID3D11BlendState* m_BlendState;
-		ID3D11DepthStencilState* m_DepthStencilState;
-		ID3D11RasterizerState* m_RasterizerState;
-		ID3D11SamplerState* m_SamplerState;
+		ID3D11PixelShader* m_PixelShader = 0;
+		ID3D11VertexShader* m_VertexShader = 0;
+
+		ID3D11BlendState* m_BlendState = 0;
+		ID3D11DepthStencilState* m_DepthStencilState = 0;
+		ID3D11RasterizerState* m_RasterizerState = 0;
+		ID3D11SamplerState* m_SamplerState = 0;
 
 		bool m_isRendered;
 	};

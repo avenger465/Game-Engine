@@ -23,6 +23,7 @@ namespace Engine
 		std::string Title;
 		uint32_t Width;
 		uint32_t Height;
+		bool VSync;
 
 		ERenderingAPI RenderType;
 		HWND Hwnd = NULL;
@@ -30,8 +31,9 @@ namespace Engine
 		WindowProperties(const std::string& title = "Engine",
 			uint32_t width = 1600,
 			uint32_t height = 900,
+			bool VSync = true,
 			ERenderingAPI renderType = ERenderingAPI::DirectX11)
-			: Title(title), Width(width), Height(height), RenderType(renderType)
+			: Title(title), Width(width), Height(height), VSync(true), RenderType(renderType)
 		{
 		}
 	};

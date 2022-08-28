@@ -1,6 +1,7 @@
 #include "epch.h"
 #include "Log.h"
 
+#define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_INFO 
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/sinks/basic_file_sink.h>
 

@@ -29,6 +29,7 @@ project "Editor"
 
 	filter "system:windows"
 		systemversion "latest"
+		defines{"E_PLATFORM_WINDOWS"}
 
 	filter "configurations:Debug"
 		defines "E_DEBUG"

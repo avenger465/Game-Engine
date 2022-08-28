@@ -2,5 +2,6 @@
 <WindowSettings>
     <Title Name="Engine"/>
     <Dimensions Height="900" Width="1600"/>
+    <VSync Active="true"/>
     <RenderingAPI Type="DirectX11"/>
 </WindowSettings>

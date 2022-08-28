@@ -90,11 +90,7 @@ project "Engine"
 
 	filter "system:windows"
 		systemversion "latest"
-
-		defines
-		{
-			"DXE_PLATFORM_WINDOWS",
-		}
+		defines{"E_PLATFORM_WINDOWS"}
 
 	filter "configurations:Debug"
 		defines "E_DEBUG"
@@ -105,3 +101,8 @@ project "Engine"
 		defines "E_Release"
 		runtime "Release"
 		optimize "on"	
+
+	filter "configurations:Dist"
+		defines "E_DIST"
+		runtime "Release"
+		optimize "on"

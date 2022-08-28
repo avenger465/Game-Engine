@@ -18,6 +18,9 @@ namespace Engine
 		LightComponent(IRenderer* renderer, Entity* entity, EntityUID UID, IShader* shader, IState* state, std::string filePath = "media/Flare.jpg",
 			CVector3 colour = CVector3(0.0f, 0.0f, 1.0f), float strength = 10.0f) : BaseEntityComponent("Light Renderer", UID, entity)
 		{
+
+
+
 			m_Renderer = renderer;
 			m_Colour = colour;
 			m_Strength = strength;
@@ -76,23 +79,23 @@ namespace Engine
 		const float GetStrength() { return m_Strength; }
 
 	private:
-		IRenderer* m_Renderer;
+		IRenderer* m_Renderer = 0;
 
-		CVector3 m_Colour;
-		float m_Strength;
-		Entity* m_Entity;
-		Mesh* m_Mesh;
-		Model* m_Model;
+		CVector3 m_Colour = 0;
+		float m_Strength = 0;
+		Entity* m_Entity = 0;
+		Mesh* m_Mesh = 0;
+		Model* m_Model = 0;
 
-		ID3D11Resource* m_TextureResource;
-		ID3D11ShaderResourceView* m_TextureSRV;
+		ID3D11Resource* m_TextureResource = 0;
+		ID3D11ShaderResourceView* m_TextureSRV = 0;
 
-		ID3D11PixelShader* m_PixelShader;
-		ID3D11VertexShader* m_VertexShader;
+		ID3D11PixelShader* m_PixelShader = 0;
+		ID3D11VertexShader* m_VertexShader = 0;
 
-		ID3D11BlendState* m_BlendState;
-		ID3D11DepthStencilState* m_DepthStencilState;
-		ID3D11RasterizerState* m_RasterizerState;
-		ID3D11SamplerState* m_SamplerState;
+		ID3D11BlendState* m_BlendState = 0;
+		ID3D11DepthStencilState* m_DepthStencilState = 0;
+		ID3D11RasterizerState* m_RasterizerState = 0;
+		ID3D11SamplerState* m_SamplerState = 0;
 	};
 }

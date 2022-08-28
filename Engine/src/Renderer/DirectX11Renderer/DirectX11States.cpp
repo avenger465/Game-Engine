@@ -11,7 +11,7 @@ namespace Engine
 
 	bool DirectX11States::InitStates(IRenderer* renderer)
 	{
-		ENGINE_CORE_INFO("Initialising States: ");
+		ENGINE_CORE_INFO("Initialising States");
 		DirectX11Renderer* dx11Renderer = static_cast<DirectX11Renderer*>(renderer);
 
 		D3D11_SAMPLER_DESC samplerDesc = {};

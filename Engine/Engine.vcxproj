@@ -75,7 +75,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DXE_PLATFORM_WINDOWS;E_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;E_PLATFORM_WINDOWS;E_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\assimp\include;vendor\imgui;vendor\imgui\backends;vendor\DirectXTK;vendor\Glad\include;vendor\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
@@ -97,7 +97,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DXE_PLATFORM_WINDOWS;E_Release;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;E_PLATFORM_WINDOWS;E_Release;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\assimp\include;vendor\imgui;vendor\imgui\backends;vendor\DirectXTK;vendor\Glad\include;vendor\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -122,16 +122,21 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DXE_PLATFORM_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;E_PLATFORM_WINDOWS;E_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\assimp\include;vendor\imgui;vendor\imgui\backends;vendor\DirectXTK;vendor\Glad\include;vendor\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <Optimization>Disabled</Optimization>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
       <AdditionalDependencies>d3d11.lib;assimp-vc140-mt.lib;DirectXTK.lib;DirectXTex.lib;d3dcompiler.lib;winmm.lib;xinput.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -176,6 +181,9 @@
     <ClInclude Include="src\System\Interfaces\IWindow.h" />
     <ClInclude Include="src\System\Log.h" />
     <ClInclude Include="src\TerrainGenerationScene\TerrainGenerationScene.h" />
+    <ClInclude Include="src\User Interface\ImGuiLayer.h" />
+    <ClInclude Include="src\User Interface\Layer.h" />
+    <ClInclude Include="src\User Interface\LayerStack.h" />
     <ClInclude Include="src\Utility\ColourRGBA.h" />
     <ClInclude Include="src\Utility\GraphicsHelpers.h" />
     <ClInclude Include="src\Utility\HashTable.h" />
@@ -217,6 +225,9 @@
     <ClCompile Include="src\System\Interfaces\IWindow.cpp" />
     <ClCompile Include="src\System\Log.cpp" />
     <ClCompile Include="src\TerrainGenerationScene\TerrainGenerationScene.cpp" />
+    <ClCompile Include="src\User Interface\ImGuiLayer.cpp" />
+    <ClCompile Include="src\User Interface\Layer.cpp" />
+    <ClCompile Include="src\User Interface\LayerStack.cpp" />
     <ClCompile Include="src\Utility\GraphicsHelpers.cpp" />
     <ClCompile Include="src\Utility\HashTable.cpp" />
     <ClCompile Include="src\Utility\Input.cpp" />

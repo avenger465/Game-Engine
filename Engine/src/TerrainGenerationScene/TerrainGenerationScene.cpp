@@ -3,13 +3,13 @@
 
 namespace Engine
 {
-	TerrainGenerationScene::TerrainGenerationScene(IRenderer* renderer, CVector3 ambientColour, float specularPower, ColourRGBA backgroundColour)
+	TerrainGenerationScene::TerrainGenerationScene(IRenderer* renderer, WindowProperties& props, CVector3 ambientColour, float specularPower, ColourRGBA backgroundColour)
 	{
 		m_Renderer = renderer;
 		m_AmbientColour = ambientColour;
 		m_backgroundColour = backgroundColour;
 		m_SpecularPower = specularPower;
-		m_WindowProps = m_Renderer->GetWindowProperties();
+		m_WindowProps = props;
 	}
 	//Function to setup all the geometry to be used in the scene
 	bool TerrainGenerationScene::InitGeometry()
@@ -96,9 +96,26 @@ namespace Engine
 		m_EntityManager->UpdateAllEntities(frameTime);
 
 		m_SceneCamera->Control(frameTime);
-		// Control camera (will update its view matrix)
-		//MainCamera->Control(frameTime);
-		//GroundModel->SetScale(TerrainYScale);
+
+		if (m_Renderer->GetRenderingType() == ERenderingAPI::DirectX11)
+		{
+			DirectX11Renderer* d11Renderer = static_cast<DirectX11Renderer*>(m_Renderer);
+
+			d11Renderer->GetRenderStats(frameTime, m_FPS, m_FrameTimeMS);
+		}
+
+		auto [mx, my] = ImGui::GetMousePos();
+		mx -= m_ViewportBounds[0].x;
+		my -= m_ViewportBounds[0].y;
+		CVector2 viewportSize = m_ViewportBounds[1] - m_ViewportBounds[0];
+		my = viewportSize.y - my;
+		int mouseX = (int)mx;
+		int mouseY = (int)my;
+		if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y)
+		{
+			//ENGINE_CORE_TRACE("X = {0} Y = {1}", mouseX, mouseY);
+		}
+
 	}
 
 	//Building the HeightMap
@@ -325,6 +342,7 @@ namespace Engine
 		if (opt_fullscreen)
 			ImGui::PopStyleVar(2);
 
+
 		
 		// Submit the DockSpace
 		ImGuiIO& io = ImGui::GetIO();
@@ -368,10 +386,13 @@ namespace Engine
 				if (ImGui::BeginMenu("Graphics"))
 				{
 					ImGui::Combo("Resolution", &n, " 1600 x 900\0 1920 x 1080\0\0");
+					ImGui::Checkbox("VSync", &m_WindowProps.VSync);
 					if (ImGui::Button("Apply"))
 					{
 						m_WindowProps.Height = windSize[n].height;
 						m_WindowProps.Width = windSize[n].width;
+
+						m_WindowProps.VSync = m_WindowProps.VSync;
 
 						ParseApplicationSettings settings;
 						settings.SaveWindowSettings(m_WindowProps);
@@ -393,8 +414,10 @@ namespace Engine
 			ImGui::EndMenuBar();
 		}
 		ImGui::Begin("Stats");
-		ImGui::Text("Draw Calls: ");
+		ImGui::Text("Frame Time: %s ms", m_FrameTimeMS);
+		ImGui::Text("Frames Per Second(FPS): %s", m_FPS);
 		ImGui::Text("quads: %s", m_EntityManager->GetEntity("ground")->GetName().c_str());
+
 		ImGui::Text("vertices: ");
 		ImGui::Text("indices: ");
 
@@ -433,10 +456,14 @@ namespace Engine
 		ImGui::End();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
-		ImGui::Begin("Viewport",0, ImGuiWindowFlags_NoTitleBar);
+
+		ImGui::Begin("Viewport",0, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
 		auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
 		auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
 		auto viewportOffset = ImGui::GetWindowPos();
+
+		m_ViewportBounds[0] = { viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y };
+		m_ViewportBounds[1] = { viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
 
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		CVector2 m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
@@ -497,7 +524,7 @@ namespace Engine
 
 	bool TerrainGenerationScene::GetVSync()
 	{
-		return false;
+		return m_WindowProps.VSync;
 	}
 
 }

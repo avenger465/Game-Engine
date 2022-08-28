@@ -49,6 +49,9 @@
     <Filter Include="src\TerrainGenerationScene">
       <UniqueIdentifier>{CBD69FF1-B7E6-4BC2-20A0-B0E00CCF3A5B}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\User Interface">
+      <UniqueIdentifier>{8CF6F783-78DA-B8D9-E13A-B32CCD3DA35B}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Utility">
       <UniqueIdentifier>{70464FB2-DCFB-C7A7-65F0-C17ED1A4BEAB}</UniqueIdentifier>
     </Filter>
@@ -174,6 +177,15 @@
     <ClInclude Include="src\TerrainGenerationScene\TerrainGenerationScene.h">
       <Filter>src\TerrainGenerationScene</Filter>
     </ClInclude>
+    <ClInclude Include="src\User Interface\ImGuiLayer.h">
+      <Filter>src\User Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\User Interface\Layer.h">
+      <Filter>src\User Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\User Interface\LayerStack.h">
+      <Filter>src\User Interface</Filter>
+    </ClInclude>
     <ClInclude Include="src\Utility\ColourRGBA.h">
       <Filter>src\Utility</Filter>
     </ClInclude>
@@ -292,6 +304,15 @@
     </ClCompile>
     <ClCompile Include="src\TerrainGenerationScene\TerrainGenerationScene.cpp">
       <Filter>src\TerrainGenerationScene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\User Interface\ImGuiLayer.cpp">
+      <Filter>src\User Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\User Interface\Layer.cpp">
+      <Filter>src\User Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\User Interface\LayerStack.cpp">
+      <Filter>src\User Interface</Filter>
     </ClCompile>
     <ClCompile Include="src\Utility\GraphicsHelpers.cpp">
       <Filter>src\Utility</Filter>

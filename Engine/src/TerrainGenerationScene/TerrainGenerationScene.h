@@ -24,7 +24,7 @@ namespace Engine
 		// Construction / Usage	//
 		//----------------------//
 	public:
-		TerrainGenerationScene(IRenderer* renderer, CVector3 ambientColour,
+		TerrainGenerationScene(IRenderer* renderer, WindowProperties& props, CVector3 ambientColour,
 			float specularPower, ColourRGBA backgroundColour);
 
 		//The size of the HeightMap
@@ -77,6 +77,7 @@ namespace Engine
 		//--------------------------//
 		// Private helper functions	//
 		//--------------------------//
+ 
 	private:
 
 		//Building the HeightMap
@@ -187,12 +188,17 @@ namespace Engine
 
 		IRenderer* m_Renderer;
 		EntityManager* m_EntityManager = nullptr;
+
 		WindowProperties m_WindowProps;
+		CVector2 m_ViewportBounds[2];
 
 		CVector3 m_AmbientColour;
 		float m_SpecularPower;
 		ColourRGBA m_backgroundColour;
 
 		Camera* m_SceneCamera = nullptr;
+
+		std::string m_FrameTimeMS;
+		std::string m_FPS;
 	};
 }
